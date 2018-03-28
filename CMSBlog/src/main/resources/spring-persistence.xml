@@ -20,6 +20,7 @@
     <tx:annotation-driven />
     
     <!-- Bean definitions go here -->
+    <context:component-scan base-package="com.sg.cmsblog.dao" />
     
     <bean id="dataSource"
           class="org.apache.commons.dbcp2.BasicDataSource">
@@ -27,7 +28,7 @@
         <property name="url" 
                   value="jdbc:mysql://localhost:3306/CMSDatabase" />
         <property name="username" value="root" />
-        <property name="password" value="root" />
+        <property name="password" value="MonkeyBanana69!" />
         <property name="initialSize" value="5" />
         <property name="maxTotal" value="10" />
     </bean>
@@ -37,11 +38,6 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     
-    <bean id="transactionManager"
-          class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-    </bean>
-    
     <jpa:repositories base-package="com.sg.cmsblog.dao" />
     
     <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
@@ -49,34 +45,23 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter"/>
-        <property name="packagesToScan" value="com.sg.model"/>
+        <property name="packagesToScan" value="com.sg.cmsblog.model"/>
         <property name="jpaProperties">
             <props>
-                <!--                    Configures the used database dialect. This allows Hibernate to create SQL
-                that is optimized for the used database.-->
-                
+                <!--Configures the used database dialect. This allows Hibernate to create SQL that is optimized for the used database.-->
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
-                
-                <!--                    Specifies the action that is invoked to the database when the Hibernate
-                SessionFactory is created or closed.-->
-                
+                <!--Specifies the action that is invoked to the database when the Hibernate SessionFactory is created or closed.-->
                 <prop key="hibernate.hbm2ddl.auto">none</prop>
-                
-                <!--                    If the value of this property is true, Hibernate writes all SQL
-                statements to the console.-->
-                
+                <!--If the value of this property is true, Hibernate writes all SQL statements to the console.-->
                 <prop key="hibernate.show_sql">true</prop>
-            
-                <!--                    If the value of this property is true, Hibernate will use prettyprint
-                when it writes SQL to the console.-->
-                
+                <!--If the value of this property is true, Hibernate will use prettyprint when it writes SQL to the console.-->
                 <prop key="hibernate.format_sql">true</prop>
             </props>
         </property>
     </bean>
     
-    
-</beans>
-    
-    
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
 </beans>
