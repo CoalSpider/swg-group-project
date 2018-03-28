@@ -4,8 +4,6 @@ create database CMSDatabase;
 
 use CMSDatabase;
 
-
-
 create table tag
 (
 	tagId int primary key auto_increment,
