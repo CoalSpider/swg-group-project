@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
  * @author Matt
  */
 @Entity
-public class user {
+public class User {
 
     @Id
     @GeneratedValue
@@ -35,7 +35,7 @@ public class user {
     @ManyToMany
     @JoinTable(name = "userRole",
             joinColumns = {
-                @JoinColumn(name = "userId")},
+                @JoinColumn(name = "useId")},
             inverseJoinColumns = {
                 @JoinColumn(name = "roleId")}
     )
@@ -94,7 +94,7 @@ public class user {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final user other = (user) obj;
+        final User other = (User) obj;
         if (this.userId != other.userId) {
             return false;
         }

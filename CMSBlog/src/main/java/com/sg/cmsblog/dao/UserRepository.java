@@ -5,8 +5,8 @@
  */
 package com.sg.cmsblog.dao;
 
+import com.sg.cmsblog.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.User;
 
 /**
  *

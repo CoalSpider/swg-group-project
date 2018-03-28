@@ -16,9 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
-import org.springframework.security.core.userdetails.User;
 
 /**
  *
@@ -48,7 +47,7 @@ public class Post {
                 @JoinColumn(name = "tagId")}
     )
     List<Tag> tag = new ArrayList<>();
-    @OneToMany
+    @ManyToOne
     User user;
 
     @ManyToMany
