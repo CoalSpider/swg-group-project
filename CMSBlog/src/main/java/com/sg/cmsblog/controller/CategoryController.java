@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *
  * @author Matt
  */
-public class CATEGORYController {
+public class CategoryController {
 
     @Autowired
     private CategoryRepository repCategory;
