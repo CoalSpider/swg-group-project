@@ -12,7 +12,10 @@ import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.dao.UserRepository;
 import com.sg.cmsblog.model.Post;
 import com.sg.cmsblog.model.Role;
+<<<<<<< HEAD:CMSBlog/src/main/java/com/sg/cmsblog/controller/RESTController.java
+=======
 import com.sg.cmsblog.model.User;
+>>>>>>> 4f7dd0975f690bbd16581baf68c759ce0be2d71c:CMSBlog/src/main/java/com/sg/cmsblog/controller/POSTController.java
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Ben Norman
  */
 @Controller
-public class RESTController {
+public class POSTController {
 
     @Autowired
     private CategoryRepository categories;
@@ -96,10 +99,17 @@ public class RESTController {
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);
     }
+<<<<<<< HEAD:CMSBlog/src/main/java/com/sg/cmsblog/controller/RESTController.java
+   
+    public void validatePost(Integer id) {
+        if (posts.exists(id) == false) {
+            throw new RuntimeException();
+=======
 
     private void validatePost(Integer postId) {
         if (posts.exists(postId) == false) {
-            throw new RuntimeException("not post with id " + postId + " exists");
+            throw new RuntimeException("no post with id " + postId + " exists");
+>>>>>>> 4f7dd0975f690bbd16581baf68c759ce0be2d71c:CMSBlog/src/main/java/com/sg/cmsblog/controller/POSTController.java
         }
     }
 }
