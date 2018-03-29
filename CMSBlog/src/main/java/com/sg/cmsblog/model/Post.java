@@ -40,7 +40,7 @@ public class Post {
     String content;
     @Column(nullable = false)
     LocalDate date;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "postTag",
             joinColumns = {
                 @JoinColumn(name = "postId")},
@@ -49,6 +49,7 @@ public class Post {
     )
     List<Tag> tag = new ArrayList<>();
     @ManyToOne
+    @JoinColumn(name = "userId")
     User user;
 
     @ManyToMany

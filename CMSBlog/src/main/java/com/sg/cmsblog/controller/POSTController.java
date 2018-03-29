@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Ben Norman
  */
 @Controller
-public class RESTController {
+public class POSTController {
 
     @Autowired
     private CategoryRepository categories;
@@ -98,7 +98,7 @@ public class RESTController {
 
     private void validatePost(Integer postId) {
         if (posts.exists(postId) == false) {
-            throw new RuntimeException("not post with id " + postId + " exists");
+            throw new RuntimeException("no post with id " + postId + " exists");
         }
     }
 }

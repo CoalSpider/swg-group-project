@@ -32,7 +32,7 @@ public class User {
     String name;
     @Column(nullable = false)
     String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "userRole",
             joinColumns = {
                 @JoinColumn(name = "userId")},
