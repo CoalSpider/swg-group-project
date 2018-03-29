@@ -11,6 +11,7 @@ import com.sg.cmsblog.dao.RoleRepository;
 import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.dao.UserRepository;
 import com.sg.cmsblog.model.Post;
+import com.sg.cmsblog.model.Role;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +80,11 @@ public class RESTController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id){
         posts.delete(id);
+    }
+   
+    public void validatePost(Integer id) {
+        if (posts.exists(id) == false) {
+            throw new RuntimeException();
+        }
     }
 }
