@@ -7,7 +7,7 @@ use CMSDatabase;
 create table tag
 (
 	tagId int primary key auto_increment,
-    name varchar(128)
+    `name` varchar(128)
 );
 
 
@@ -15,7 +15,7 @@ create table tag
 create table Role
 (
 	roleId int primary key auto_increment,
-    Name varchar(128) not null
+    `name` varchar(128) not null
 );
 
 create table `User`
@@ -57,7 +57,7 @@ create table PostTag
 create table Category
 (
 	categoryId int primary key auto_increment,
-    name varchar(128)
+    `name` varchar(128)
 );
 	
 create table PostCategory
