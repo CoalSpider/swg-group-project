@@ -5,11 +5,11 @@
  */
 package com.sg.cmsblog.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -32,14 +32,14 @@ public class User {
     String name;
     @Column(nullable = false)
     String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userRole",
             joinColumns = {
-                @JoinColumn(name = "useId")},
+                @JoinColumn(name = "userId")},
             inverseJoinColumns = {
                 @JoinColumn(name = "roleId")}
     )
-    List<Role> roles = new ArrayList<>();
+    List<Role> roles;
 
     public int getUserId() {
         return userId;
