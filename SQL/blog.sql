@@ -7,25 +7,31 @@ use CMSDatabase;
 create table tag
 (
 	tagId int primary key auto_increment,
-    name varchar(128)
+    `name` varchar(128)
 );
 
 
 
-create table role
+create table Role
 (
 	roleId int primary key auto_increment,
-    Name varchar(128) not null
+    `name` varchar(128) not null
 );
 
-create table `user`
+create table `User`
 (
     userId int primary key auto_increment,
-    name varchar(128) not null,
-    password varchar(512) not null,
-    roleId int not null,
-    userType tinyint not null,
-    foreign key (roleId) references role(roleId)
+    `name` varchar(128) not null,
+    `password` varchar(512) not null
+);
+
+create table UserRole
+(
+	userId int,
+    roleId int,
+    primary key(userId, roleId),
+    foreign key(userId) references `User`(userId),
+    foreign key(roleId) references Role(roleId)
 );
 
 create table Post
@@ -36,33 +42,31 @@ create table Post
     title varchar(128) not null,
     summary tinyText not null,
     content longtext not null,
-    foreign key (userid) references user(userId)
+    foreign key (userid) references `User`(userId)
 );
 
-create table postTag
+create table PostTag
 (
 	postId int,
     tagId int,
-    
     primary key(postId, tagId),
-    foreign key (postId) references post(postId),
-    foreign key (tagId) references tag(tagId)
+    foreign key (postId) references Post(postId),
+    foreign key (tagId) references Tag(tagId)
 );
 
-create table category
+create table Category
 (
 	categoryId int primary key auto_increment,
-    name varchar(128)
+    `name` varchar(128)
 );
 	
-create table postCategory
+create table PostCategory
 (
-    categoryId int not null,
-    postId int not null,
-    
+    categoryId int,
+    postId int,
     primary Key(categoryId,postId),
-	foreign key (categoryId) references category(categoryId),
-	foreign key (postId) references post(postId)
+	foreign key (categoryId) references Category(categoryId),
+	foreign key (postId) references Post(postId)
      
 );
 

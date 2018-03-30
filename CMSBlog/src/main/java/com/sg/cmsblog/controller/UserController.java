@@ -5,16 +5,13 @@
  */
 package com.sg.cmsblog.controller;
 
-import com.sg.cmsblog.dao.RoleRepository;
-import com.sg.cmsblog.model.Role;
+import com.sg.cmsblog.dao.UserRepository;
+import com.sg.cmsblog.model.User;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-<<<<<<< HEAD
-=======
 import org.springframework.stereotype.Controller;
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,61 +24,55 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * @author Willie Suggs ZeroCool
+ * @author Matt
  */
-<<<<<<< HEAD
-=======
 @Controller
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
-public class RoleController {
+public class UserController {
 
     @Autowired
-    private RoleRepository roles;
+    private UserRepository repUser;
 
-    @GetMapping("/role{id}")
+    @GetMapping("/user{id}")
     @ResponseBody
-    public Role getRole(@PathVariable Integer id) {
-<<<<<<< HEAD
-        return roles.getOne(id);
-=======
-        return roles.findOne(id);
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
+    public User getUser(@PathVariable Integer id) {
+        return repUser.findOne(id);
     }
 
-    @GetMapping("/roles")
+    @GetMapping("users")
     @ResponseBody
-    public List<Role> getAllRoles() {
-        return roles.findAll();
+    public List<User> getAllUsers() {
+        return repUser.findAll();
     }
 
-    @PostMapping("/role")
+    @PostMapping("/user")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Role createRole(@Valid @RequestBody Role role, BindingResult bindingResult) {
+    public User createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + role);
+            throw new RuntimeException("bad create for " + user);
         }
-        return roles.save(role);
+        return repUser.save(user);
     }
 
-    @PutMapping("/role{id}")
+    @PutMapping("/user{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateRole(@PathVariable Integer id, @Valid @RequestBody Role role, BindingResult bindingResult) {
+    public void updateUser(@PathVariable Integer id, @Valid @RequestBody User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad update for " + role);
+            throw new RuntimeException("bad update for " + user);
         }
-        roles.save(role);
+        repUser.save(user);
     }
 
-    @DeleteMapping("/role{id}")
+    @DeleteMapping("/user{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRole(@PathVariable Integer id) {
-        roles.delete(id);
+    public void deleteUser(Integer id) {
+        repUser.delete(id);
+
     }
 
-    public void validateRole(Integer id) {
-        if (roles.exists(id) == false) {
-            throw new RuntimeException();
+    private void validateUser(Integer id) {
+        if (repUser.exists(id) == false) {
+            throw new RuntimeException("no post with id " + id + "exists");
         }
     }
 }

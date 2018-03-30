@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Proxy;
 
 /**
  *
@@ -21,10 +22,10 @@ public class Tag {
 
     @Id
     @GeneratedValue
-    int tagId;
+    private int tagId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Name must be between 1 - 128 characters.")
-    String name;
+    private String name;
 
     public int getTagId() {
         return tagId;

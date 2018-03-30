@@ -5,16 +5,13 @@
  */
 package com.sg.cmsblog.controller;
 
-import com.sg.cmsblog.dao.RoleRepository;
-import com.sg.cmsblog.model.Role;
+import com.sg.cmsblog.dao.CategoryRepository;
+import com.sg.cmsblog.model.Category;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-<<<<<<< HEAD
-=======
 import org.springframework.stereotype.Controller;
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,61 +24,54 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * @author Willie Suggs ZeroCool
+ * @author Matt
  */
-<<<<<<< HEAD
-=======
 @Controller
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
-public class RoleController {
+public class CategoryController {
 
     @Autowired
-    private RoleRepository roles;
+    private CategoryRepository repCategory;
 
-    @GetMapping("/role{id}")
+    @GetMapping("/category{id}")
     @ResponseBody
-    public Role getRole(@PathVariable Integer id) {
-<<<<<<< HEAD
-        return roles.getOne(id);
-=======
-        return roles.findOne(id);
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
+    public Category getCategory(@PathVariable Integer id) {
+        return repCategory.findOne(id);
     }
 
-    @GetMapping("/roles")
+    @GetMapping("/categories")
     @ResponseBody
-    public List<Role> getAllRoles() {
-        return roles.findAll();
+    public List<Category> getAllCategories() {
+        return repCategory.findAll();
     }
 
-    @PostMapping("/role")
+    @PostMapping("/category")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Role createRole(@Valid @RequestBody Role role, BindingResult bindingResult) {
+    public Category createCategory(@Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + role);
+            throw new RuntimeException("bad create for " + category);
         }
-        return roles.save(role);
+        return repCategory.save(category);
     }
 
-    @PutMapping("/role{id}")
+    @PutMapping("/category{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateRole(@PathVariable Integer id, @Valid @RequestBody Role role, BindingResult bindingResult) {
+    public void updateCategory(@PathVariable Integer id, @Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad update for " + role);
+            throw new RuntimeException("bad update for " + category);
         }
-        roles.save(role);
+        repCategory.save(category);
     }
 
-    @DeleteMapping("/role{id}")
+    @DeleteMapping("/category{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRole(@PathVariable Integer id) {
-        roles.delete(id);
+    public void deleteCategory(Integer id) {
+        repCategory.delete(id);
     }
 
-    public void validateRole(Integer id) {
-        if (roles.exists(id) == false) {
-            throw new RuntimeException();
+    public void validateCategory(Integer categoryId) {
+        if (repCategory.exists(categoryId) == false) {
+            throw new RuntimeException("not post with id " + categoryId + " exists");
         }
     }
 }

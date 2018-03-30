@@ -5,11 +5,13 @@
  */
 package com.sg.cmsblog.model;
 
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,20 +28,20 @@ public class User {
 
     @Id
     @GeneratedValue
-    int userId;
+    private int userId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Name must be between 1 - 128 characters.")
-    String name;
+    private String name;
     @Column(nullable = false)
-    String password;
+    private String password;
     @ManyToMany
-    @JoinTable(name = "userRole",
+    @JoinTable(name = "UserRole",
             joinColumns = {
-                @JoinColumn(name = "useId")},
+                @JoinColumn(name = "userId")},
             inverseJoinColumns = {
                 @JoinColumn(name = "roleId")}
     )
-    List<Role> roles = new ArrayList<>();
+    private List<Role> roles;
 
     public int getUserId() {
         return userId;

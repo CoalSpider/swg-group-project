@@ -5,16 +5,13 @@
  */
 package com.sg.cmsblog.controller;
 
-import com.sg.cmsblog.dao.TagRepository;
-import com.sg.cmsblog.model.Tag;
+import com.sg.cmsblog.dao.PostRepository;
+import com.sg.cmsblog.model.Post;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-<<<<<<< HEAD
-=======
 import org.springframework.stereotype.Controller;
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,61 +24,48 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *
- * @author Willie Suggs ZeroCool
+ * @author Ben Norman
  */
-<<<<<<< HEAD
-=======
 @Controller
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
-public class TagController {
+public class PostController {
 
     @Autowired
-    private TagRepository tags;
+    private PostRepository posts;
 
-    @GetMapping("/tag{id}")
+    @GetMapping("/post{id}")
     @ResponseBody
-    public Tag getTag(@PathVariable Integer id) {
-<<<<<<< HEAD
-        return tags.getOne(id);
-=======
-        return tags.findOne(id);
->>>>>>> fa3ba5bb2f9f5d953dcb1f2d89460d5827e65758
+    public Post getPost(@PathVariable Integer id) {
+        return posts.findOne(id);
     }
 
-    @GetMapping("/tags")
+    @GetMapping("/posts")
     @ResponseBody
-    public List<Tag> getAllTags() {
-        return tags.findAll();
+    public List<Post> getAllPosts() {
+        return posts.findAll();
     }
 
-    @PostMapping("/tag")
+    @PostMapping("/post")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public Tag createTag(@Valid @RequestBody Tag tag, BindingResult bindingResult) {
+    public Post createPost(@Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + tag);
+            throw new RuntimeException("bad create for " + post);
         }
-        return tags.save(tag);
+        return posts.save(post);
     }
 
-    @PutMapping("/tag{id}")
+    @PutMapping("/post{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTag(@PathVariable Integer id, @Valid @RequestBody Tag tag, BindingResult bindingResult) {
+    public void updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad update for " + tag);
+            throw new RuntimeException("bad update for " + post);
         }
-        tags.save(tag);
+        posts.save(post);
     }
 
-    @DeleteMapping("/tag{id}")
+    @DeleteMapping("/post{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTag(@PathVariable Integer id) {
-        tags.delete(id);
-    }
-
-    public void validateRole(Integer id) {
-        if (tags.exists(id) == false) {
-            throw new RuntimeException();
-        }
+    public void deletePost(@PathVariable Integer id) {
+        posts.delete(id);
     }
 }
