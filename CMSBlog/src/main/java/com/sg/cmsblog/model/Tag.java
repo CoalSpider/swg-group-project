@@ -11,12 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Proxy;
 
 /**
  *
  * @author Matt
  */
 @Entity
+@Proxy(lazy = false)
 public class Tag {
 
     @Id

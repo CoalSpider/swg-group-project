@@ -46,18 +46,6 @@ public class PostController {
     @Autowired
     private UserRepository users;
 
-    @GetMapping("/role{id}")
-    @ResponseBody
-    public Role getRole(@PathVariable Integer id) {
-        return roles.findOne(id);
-    }
-
-    @GetMapping("/user{id}")
-    @ResponseBody
-    public User getUser(@PathVariable Integer id) {
-        return users.findOne(id);
-    }
-
     @GetMapping("/post{id}")
     @ResponseBody
     public Post getPost(@PathVariable Integer id) {
