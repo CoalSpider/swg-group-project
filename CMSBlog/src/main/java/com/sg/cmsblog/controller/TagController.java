@@ -35,11 +35,11 @@ public class TagController {
     @GetMapping("/tag{id}")
     @ResponseBody
     public Tag getTag(@PathVariable Integer id) {
+        // TODO: should we handle id doesnt exist here?
         return tags.findOne(id);
     }
 
     @GetMapping("/tags")
-    @ResponseBody
     public List<Tag> getAllTags() {
         return tags.findAll();
     }

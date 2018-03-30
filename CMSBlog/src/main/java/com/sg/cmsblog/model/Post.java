@@ -10,8 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,17 +31,17 @@ public class Post {
 
     @Id
     @GeneratedValue
-    int postId;
+    private int postId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Title must be between 1- 128")
-    String title;
+    private String title;
     @Column(nullable = false)
     @Size(min = 1, message = "Post must include summary")
-    String summary;
+    private String summary;
     @Column(nullable = false)
-    String content;
+    private String content;
     @Column(nullable = false)
-    LocalDate date;
+    private LocalDate date;
     @ManyToMany
     @JoinTable(name = "postTag",
             joinColumns = {
@@ -47,10 +49,10 @@ public class Post {
             inverseJoinColumns = {
                 @JoinColumn(name = "tagId")}
     )
-    List<Tag> tag = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "userId")
-    User user;
+    private User user;
 
     @ManyToMany
     @JoinTable(name = "postCategory",
@@ -59,7 +61,7 @@ public class Post {
             inverseJoinColumns = {
                 @JoinColumn(name = "categoryId")}
     )
-    List<Category> categories = new ArrayList<>();
+    private List<Category> categories = new ArrayList<>();
 
     public int getPostId() {
         return postId;
@@ -101,12 +103,12 @@ public class Post {
         this.date = date;
     }
 
-    public List<Tag> getTag() {
-        return tag;
+    public List<Tag> getTags() {
+        return tags;
     }
 
-    public void setTag(List<Tag> tag) {
-        this.tag = tag;
+    public void setTags(List<Tag> tag) {
+        this.tags = tag;
     }
 
     public User getUser() {
@@ -133,7 +135,7 @@ public class Post {
         hash = 67 * hash + Objects.hashCode(this.summary);
         hash = 67 * hash + Objects.hashCode(this.content);
         hash = 67 * hash + Objects.hashCode(this.date);
-        hash = 67 * hash + Objects.hashCode(this.tag);
+        hash = 67 * hash + Objects.hashCode(this.tags);
         hash = 67 * hash + Objects.hashCode(this.user);
         hash = 67 * hash + Objects.hashCode(this.categories);
         return hash;
@@ -166,7 +168,7 @@ public class Post {
         if (!Objects.equals(this.date, other.date)) {
             return false;
         }
-        if (!Objects.equals(this.tag, other.tag)) {
+        if (!Objects.equals(this.tags, other.tags)) {
             return false;
         }
         if (!Objects.equals(this.user, other.user)) {
