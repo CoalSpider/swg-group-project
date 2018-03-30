@@ -12,6 +12,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,11 +58,11 @@ public class PostController {
 
     @PutMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
+    public Post updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + post);
         }
-        posts.save(post);
+        return posts.save(post);
     }
 
     @DeleteMapping("/post/{id}")

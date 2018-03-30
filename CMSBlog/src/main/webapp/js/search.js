@@ -4,12 +4,8 @@
  * and open the template in the editor.
  */
 
-function runSearch(searchtag) {
-    
-    $.ajax({
-        type:"GET",
-        url: "http://localhost:8080/search" + searchTag,
-        
-    })
+function getAllPosts(searchtag) {
+
+
 }
 
