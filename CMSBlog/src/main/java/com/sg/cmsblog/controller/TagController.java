@@ -8,7 +8,6 @@ package com.sg.cmsblog.controller;
 import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.model.Tag;
 import java.util.List;
-import javassist.NotFoundException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ public class TagController {
 
     @GetMapping("/tag{id}")
     @ResponseBody
-    public Tag getTag(@PathVariable Integer id) throws NotFoundException {
+    public Tag getTag(@PathVariable Integer id) {
         // TODO: should we handle id doesnt exist here?
         return tags.findOne(id);
     }
