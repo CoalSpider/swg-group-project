@@ -18,7 +18,6 @@ import org.hibernate.annotations.Proxy;
  * @author Matt
  */
 @Entity
-@Proxy(lazy = false)
 public class Tag {
 
     @Id

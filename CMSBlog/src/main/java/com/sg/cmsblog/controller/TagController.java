@@ -32,7 +32,7 @@ public class TagController {
     @Autowired
     private TagRepository tags;
 
-    @GetMapping("/tag{id}")
+    @GetMapping("/tag/{id}")
     @ResponseBody
     public Tag getTag(@PathVariable Integer id) {
         // TODO: should we handle id doesnt exist here?
@@ -55,7 +55,7 @@ public class TagController {
         return tags.save(tag);
     }
 
-    @PutMapping("/tag{id}")
+    @PutMapping("/tag/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTag(@PathVariable Integer id, @Valid @RequestBody Tag tag, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -64,7 +64,7 @@ public class TagController {
         tags.save(tag);
     }
 
-    @DeleteMapping("/tag{id}")
+    @DeleteMapping("/tag/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTag(@PathVariable Integer id) {
         tags.delete(id);
