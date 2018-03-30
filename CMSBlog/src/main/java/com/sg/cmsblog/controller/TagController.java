@@ -40,6 +40,7 @@ public class TagController {
     }
 
     @GetMapping("/tags")
+    @ResponseBody
     public List<Tag> getAllTags() {
         return tags.findAll();
     }

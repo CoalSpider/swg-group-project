@@ -56,11 +56,11 @@ public class PostController {
 
     @PutMapping("/post{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
+    public Post updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + post);
         }
-        posts.save(post);
+        return posts.save(post);
     }
 
     @DeleteMapping("/post{id}")
