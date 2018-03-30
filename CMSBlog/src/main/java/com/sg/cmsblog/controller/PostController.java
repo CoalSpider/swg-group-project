@@ -32,7 +32,7 @@ public class PostController {
     @Autowired
     private PostRepository posts;
 
-    @GetMapping("/post{id}")
+    @GetMapping("/post/{id}")
     @ResponseBody
     public Post getPost(@PathVariable Integer id) {
         return posts.findOne(id);
@@ -54,7 +54,7 @@ public class PostController {
         return posts.save(post);
     }
 
-    @PutMapping("/post{id}")
+    @PutMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -63,7 +63,7 @@ public class PostController {
         posts.save(post);
     }
 
-    @DeleteMapping("/post{id}")
+    @DeleteMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);
