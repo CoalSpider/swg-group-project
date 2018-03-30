@@ -19,7 +19,6 @@ import org.hibernate.annotations.Proxy;
  */
 @Entity
 public class Role {
-
     @Id
     @GeneratedValue
     private int roleId;

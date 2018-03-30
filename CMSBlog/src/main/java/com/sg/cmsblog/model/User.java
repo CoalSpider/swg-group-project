@@ -5,7 +5,7 @@
  */
 package com.sg.cmsblog.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.CascadeType;
@@ -24,8 +24,8 @@ import javax.validation.constraints.Size;
  * @author Matt
  */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
-
     @Id
     @GeneratedValue
     private int userId;

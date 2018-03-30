@@ -14,7 +14,7 @@ $(document).ready(function () {
 function getTag(id) {
     $.ajax({
         type: "GET",
-        url: basePath + "tag" + id,
+        url: basePath + "tag/" + id,
         success: function (data) {
             if (!$.trim(data)) {
                 console.log("data is null");
@@ -41,6 +41,17 @@ function getAllTags(){
     });
 }
 
-function saveTags(tagString){
-    
+function updateTags(tagString){
+    // TODO spring split + loop
+    var id = 1;
+    $.ajax({
+        type: "PUT",
+        url: basePath + "tag" + id,
+        success: function(data){
+            console.log("update tag");
+        },
+        error: function(jqxHR, textStatus, errorThrown){
+            console.log("error updating tag");
+        }
+    });
 }
