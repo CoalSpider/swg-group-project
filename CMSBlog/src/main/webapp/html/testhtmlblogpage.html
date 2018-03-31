@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Blog Page</title>
+        <meta charset="Utf-8"/>
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/mainStyles.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <input id="titleInput" type="text" placeholder="enter title"/>
+            <textarea id="summaryInput" placeholder="enter summary"></textarea>
+            <input id="dateInput" type="date"/>
+            <div id="tinyMCEInput">
+                <script>
+                    tinymce.init({
+                        selector: 'textarea',
+                        height: 500,
+                        extended_valid_elements: 'img[class=myclass|!src|border:0|alt|title|width|height|style]',
+                        invalid_elements: 'strong,b,em,i',
+                        content_css: [
+                            '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                            '//www.tinymce.com/css/codepen.min.css'
+                        ]
+                    });
+                </script>
+            </div>
+            <div id="categoryCheckboxes"><!-- generated boxes go here --></div>
+        <!--<div id="tagButtonContainer">
+                <div id="tags"> generated content goes here </div>
+                <button id="edit">Edit</button>
+            </div>-->
+            <div id="inputContainer" style="display:none">
+                <textarea id="tagInput" placeholder="enter tags"></textarea>
+                <button id="cancel">Cancel</button>
+                <button id="save">Save</button>
+            </div>
+        </div>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../js/jquery-3.1.1.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <!--<script src="../js/ajaxtesting.js"></script>-->
+    </body>
+</html>
