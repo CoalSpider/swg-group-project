@@ -56,7 +56,7 @@ public class PostController {
         return posts.save(post);
     }
 
-    @PutMapping("/post{id}")
+    @PutMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Post updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -65,7 +65,7 @@ public class PostController {
         return posts.save(post);
     }
 
-    @DeleteMapping("/post{id}")
+    @DeleteMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);
