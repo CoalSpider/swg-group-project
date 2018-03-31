@@ -13,5 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Matt
  */
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-
+    boolean existsByName(String name);
 }

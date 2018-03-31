@@ -14,10 +14,15 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <div id="tags"><!-- generated content goes here --></div>
-            
-            gyu     ilew.sujsa op;iheuliauepowae
-            <button id="ajaxButton">Get Tag 1</button>
+            <div id="tagButtonContainer">
+                <div id="tags"><!-- generated content goes here --></div>
+                <button id="edit">Edit</button>
+            </div>
+            <div id="inputContainer" style="display:none">
+                <input id="tagInput" type="text" placeholder="enter tags"/>
+                <button id="cancel">Cancel</button>
+                <button id="save">Save</button>
+            </div>
         </div>
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="../js/jquery-3.1.1.min.js"></script>

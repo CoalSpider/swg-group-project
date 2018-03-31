@@ -9,9 +9,9 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Size;
-import org.hibernate.annotations.Proxy;
 
 /**
  *
@@ -21,7 +21,7 @@ import org.hibernate.annotations.Proxy;
 public class Tag {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // forces hibernate to insert asap, workaround for inserting multiple tags in for:each
     private int tagId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Name must be between 1 - 128 characters.")

@@ -5,74 +5,85 @@
  */
 package com.sg.cmsblog.controller;
 
+import com.sg.cmsblog.exceptions.NotFoundException;
 import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.model.Tag;
 import java.util.List;
-import javax.validation.Valid;
+//import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.validation.BindingResult;
+//import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+//import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Willie Suggs ZeroCool
  */
-@Controller
+@RestController
 public class TagController {
 
     @Autowired
     private TagRepository tags;
 
-    @GetMapping("/tag/{id}")
-    @ResponseBody
-    public Tag getTag(@PathVariable Integer id) {
-        // TODO: should we handle id doesnt exist here?
-        return tags.findOne(id);
-    }
+// tags are not retrieved singly    
+//    @GetMapping("/tag/{id}")
+//    public Tag getTag(@PathVariable Integer id) throws NotFoundException{
+//        if(tags.exists(id)==false){
+//            throw new NotFoundException("could not find tag");
+//        }
+//        return tags.findOne(id);
+//    }
 
     @GetMapping("/tags")
-    @ResponseBody
     public List<Tag> getAllTags() {
         return tags.findAll();
     }
-
-    @PostMapping("/tag")
-    @ResponseBody
-    @ResponseStatus(HttpStatus.CREATED)
-    public Tag createTag(@Valid @RequestBody Tag tag, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + tag);
+    
+    @PutMapping("/tags")
+    public List<Tag> createTagsThatDontExist(@RequestBody List<Tag> tagList) {
+        for(Tag t : tagList){
+            // if the tag doesnt yet exist create it
+            if(tags.existsByName(t.getName())==false){
+                tags.save(t);
+            }
         }
-        return tags.save(tag);
+        return tags.findAll();
     }
 
-    @PutMapping("/tag/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateTag(@PathVariable Integer id, @Valid @RequestBody Tag tag, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad update for " + tag);
-        }
-        tags.save(tag);
-    }
+// tags are not currently created one at a time but in batches
+//    @PostMapping("/tag")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Tag createTag(@Valid @RequestBody Tag tag, BindingResult bindingResult){
+//        if (bindingResult.hasErrors()) {
+//            throw new RuntimeException("bad create for " + tag);
+//        }
+//        return tags.save(tag);
+//    }
 
-    @DeleteMapping("/tag/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTag(@PathVariable Integer id) {
-        tags.delete(id);
-    }
+// tags cannot be edited    
+//    @PutMapping("/tag/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void updateTag(@PathVariable Integer id, @Valid @RequestBody Tag tag, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            throw new RuntimeException("bad update for " + tag);
+//        }
+//        tags.save(tag);
+//    }
 
-    public void validateRole(Integer id) {
-        if (tags.exists(id) == false) {
-            throw new RuntimeException();
-        }
-    }
+// tags cannot be deleted
+//    @DeleteMapping("/tag/{id}")
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void deleteTag(@PathVariable Integer id) throws NotFoundException {
+//        if(tags.exists(id)==false){
+//            throw new NotFoundException("could not find tag");
+//        }
+//        tags.delete(id);
+//    }
 }
