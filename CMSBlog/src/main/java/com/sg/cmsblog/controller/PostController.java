@@ -11,9 +11,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,33 +18,30 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Ben Norman
  */
-@Controller
+@RestController
 public class PostController {
 
     @Autowired
     private PostRepository posts;
 
     @GetMapping("/post/{id}")
-    @ResponseBody
     public Post getPost(@PathVariable Integer id) {
         return posts.findOne(id);
     }
 
     @GetMapping("/posts")
-    @ResponseBody
     public List<Post> getAllPosts() {
         return posts.findAll();
     }
 
     @PostMapping("/post")
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public Post createPost(@Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -56,8 +50,7 @@ public class PostController {
         return posts.save(post);
     }
 
-    @PutMapping("/post{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/post/{id}")
     public Post updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + post);
@@ -65,7 +58,7 @@ public class PostController {
         return posts.save(post);
     }
 
-    @DeleteMapping("/post{id}")
+    @DeleteMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);

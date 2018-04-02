@@ -6,52 +6,145 @@
 const basePath = "http://localhost:8080/CMSBlog/";
 
 $(document).ready(function () {
-    $("#ajaxButton").click(function () {
-        getTag(1);
+    getAllTags();
+    $("#save").click(function () {
+        saveTags();
+    });
+    $("#edit").click(function () {
+        editTags();
+    });
+    $("#cancel").click(function () {
+        console.log("cancel edit");
     });
 });
 
-function getTag(id) {
-    $.ajax({
-        type: "GET",
-        url: basePath + "tag/" + id,
-        success: function (data) {
-            if (!$.trim(data)) {
-                console.log("data is null");
-            } else {
-                console.log("succuss get tag " + id);
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error get tag");
-        }
-    });
-}
+// unused
+//function getTag(id) {
+//    $.ajax({
+//        type: "GET",
+//        url: basePath + "tag/" + id,
+//        success: function (data) {
+//            console.log(data);
+//            $("#tags").html("<p>" + data.tagId + ":" + data.name + "</p>");
+//        },
+//        error: function (jqXHR, textStatus, errorThrown) {
+//            $("#tags").html("<p>" + jqXHR.responseJSON.message + "</p>");
+//        }
+//    });
+//}
 
-function getAllTags(){
+function getAllTags() {
     $.ajax({
         type: "GET",
         url: basePath + "tags",
-        success: function(data){
-            console.log("succus get all tags");
+        success: function (data) {
+            createTagButtons(data);
         },
-        error: function(jqxHR, textStatus, errorThrown){
-            console.log("error get all tags");
+        error: function (jqXHR, textStatus, errorThrown) {
+            $("#tags").html("<p>" + jqXHR.responseJSON.message + "</p>");
         }
     });
 }
 
-function updateTags(tagString){
-    // TODO spring split + loop
-    var id = 1;
+function save() {
+    // get list of tag buttons
+    var tags = $(".tag");
+    // convert tag buttons to a big JSON string
+    var jsonString = "[";
+    
+    $.each(tags, function (i, tag) {
+        jsonString += JSON.stringify({
+            tagId: new Number(tag.value), 
+            name: tag.name
+        });
+        if (i < tags.length-1) {
+            jsonString += ",";
+        }
+    });
+    
+    jsonString += "]";
+    // log
+    console.log("jsonstring = " + jsonString);
+    
+    // ajax start
     $.ajax({
         type: "PUT",
-        url: basePath + "tag" + id,
-        success: function(data){
-            console.log("update tag");
+        url: basePath + "tags",
+        data: jsonString,
+        headers: {
+            'Accept': "application/json",
+            'Content-Type': "application/json"
         },
-        error: function(jqxHR, textStatus, errorThrown){
-            console.log("error updating tag");
+        dataType: 'json',
+        success: function (data) {
+            createTagButtons(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("error saving tags");
+            console.log(errorThrown);
+            console.log(jqXHR);
         }
+    });
+}
+
+function editTags() {
+    var tagsString = buttonsToString();
+    $("#inputContainer").css("display", "block");
+    $("#tagInput").val(tagsString);
+    $("#tagButtonContainer").css("display", "none");
+}
+
+function saveTags() {
+    var tagsString = $("#tagInput").val();
+    var buttonHtml = stringToHTMLButtons(tagsString);
+    $("#inputContainer").css("display", "none");
+    $("#tags").html(buttonHtml);
+    hookSearchToTagButtons();
+    $("#tagButtonContainer").css("display", "block");
+    
+    save();
+}
+
+function buttonsToString() {
+    var tags = $(".tag");
+    var tagsString = "";
+    $.each(tags, function (i, tag) {
+        tagsString += tag.name;
+        if(i < tags.length - 1){
+            tagsString += ", ";
+        }
+    });
+    // replace any delimiter groupings with just one
+    tagsString = tagsString.replace(/[ ,.]+/, ", ");
+    return tagsString;
+}
+
+function stringToHTMLButtons(tagsString) {
+    var html = "";
+    // match on 1 or more , . or ' '
+    $.each(tagsString.split(/[ ,.]+/), function (i, tagName) {
+        html += "<button class='tag' id=" + i + " name=" + tagName + ">" + tagName + "</button>";
+    });
+    return html;
+}
+
+function hookSearchToTagButtons() {
+    var tagButtons = $(".tag");
+    $.each(tagButtons, function (i, button) {
+        button.addEventListener("click", function () {
+            console.log("search for " + button.name);
+        });
+    });
+}
+
+// used for initial load from database
+function createTagButtons(tags) {
+    $("#tags").html("");
+    $.each(tags, function (i, tag) {
+        // create a tag string
+        $("#tags").append("<button class='tag' id=" + tag.tagId + " value='" + tag.tagId + "' name=" + tag.name + ">" + tag.name + "</button>");
+        $("#" + tag.tagId).click(function () {
+            console.log("search for " + tag.name);
+        });
     });
 }
