@@ -20,8 +20,7 @@ function load(postId) {
                 $("#id").val(data.postId);
                 $("#titleInput").val(data.title);
                 $("#summaryInput").val(data.summary);
-                var date = data.date.year + "-" + data.date.monthValue + "-" + data.date.dayOfMonth;
-                $("#dateInput").val(date);
+                $("#dateInput").val(data.date);
                 // fill tiny mce with post content
                 $("#tinyMCEInput").val(data.content);
                 // check categories assosiated with this post
@@ -34,12 +33,14 @@ function load(postId) {
                 $("body").html("<p>404 not found</p>");
             }
         });
+    }).fail(function(){
+        // handle failures
     });
 
 }
 
 function createCategoryCheckboxes() {
-    $.ajax({
+    return $.ajax({
         type: "GET",
         url: basePath + "categories",
         success: function (data) {
@@ -168,11 +169,11 @@ function hookSaveButton() {
                 type: "PUT",
                 url: basePath + "post/" + $("#id").val(),
                 data: JSON.stringify({
-                    postId: 1,
-                    title: "testPost",
-                    summary: "this is a test summary",
-                    content: "<div><p>test html content</p></div>",
-                    date: "1582-10-15",
+                    postId: $("#id").val(),
+                    title: $("#titleInput").val(),
+                    summary: $("#summaryInput").val(),
+                    content: $("#tinyMCEInput").val(),
+                    date: $("#dateInput").val(),
                     tags: resultA,
                     user: {
                         userId: 1,
