@@ -5,9 +5,9 @@
  */
 package com.sg.cmsblog.controller;
 
-import com.sg.cmsblog.exceptions.NotFoundException;
 import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.model.Tag;
+import java.util.ArrayList;
 import java.util.List;
 //import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.validation.BindingResult;
 //import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,6 +45,7 @@ public class TagController {
         return tags.findAll();
     }
     
+    /** @return the tag list passed (with ids) **/
     @PutMapping("/tags")
     public List<Tag> createTagsThatDontExist(@RequestBody List<Tag> tagList) {
         for(Tag t : tagList){
@@ -54,7 +54,11 @@ public class TagController {
                 tags.save(t);
             }
         }
-        return tags.findAll();
+        List<Tag> result = new ArrayList<>();
+        for(Tag t : tagList){
+            result.add(tags.findByName(t.getName()));
+        }
+        return result;
     }
 
 // tags are not currently created one at a time but in batches

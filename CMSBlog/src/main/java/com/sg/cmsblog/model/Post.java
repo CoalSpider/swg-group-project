@@ -5,7 +5,7 @@
  */
 package com.sg.cmsblog.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,6 @@ import javax.validation.constraints.Size;
  * @author Matt
  */
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Post {
     @Id
     @GeneratedValue
@@ -39,6 +38,7 @@ public class Post {
     @Column(nullable = false)
     private String content;
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @ManyToMany
     @JoinTable(name = "postTag",

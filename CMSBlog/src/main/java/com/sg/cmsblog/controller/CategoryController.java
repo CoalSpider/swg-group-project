@@ -11,7 +11,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,34 +18,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author Matt
  */
 
-@Controller
+@RestController
 public class CategoryController {
 
     @Autowired
     private CategoryRepository repCategory;
 
     @GetMapping("/category{id}")
-    @ResponseBody
     public Category getCategory(@PathVariable Integer id) {
         return repCategory.findOne(id);
     }
 
     @GetMapping("/categories")
-    @ResponseBody
     public List<Category> getAllCategories() {
         return repCategory.findAll();
     }
 
     @PostMapping("/category")
-    @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     public Category createCategory(@Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {

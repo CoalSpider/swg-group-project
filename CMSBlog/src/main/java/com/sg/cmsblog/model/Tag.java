@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 public class Tag {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // forces hibernate to insert asap, workaround for inserting multiple tags in for:each
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // type=identity = workaround for error performing isolated work
     private int tagId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Name must be between 1 - 128 characters.")
