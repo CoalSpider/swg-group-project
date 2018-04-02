@@ -7,6 +7,8 @@ package com.sg.cmsblog.dao;
 
 import com.sg.cmsblog.model.Category;
 import com.sg.cmsblog.model.Post;
+import com.sg.cmsblog.model.Tag;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -15,5 +17,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface PostRepository extends JpaRepository<Post, Integer> {
 
-    Post findByCategoriesContaining(Category category);
+    List<Post> findByCategoriesContaining(Category category);
+    
+    List<Post> findByTagsContaining(Tag tag);
 }

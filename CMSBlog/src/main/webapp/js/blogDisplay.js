@@ -104,6 +104,21 @@ function loadCategory() {
     });
 }
 
+//function displayPostByCategory(name) {
+//    $.ajax({
+//        type: 'GET',
+//        url: basePath + 'categories' + name,
+//        data: JSON.stringify({
+//            name: name
+//        }),
+//        success: function(data) {
+//            $.each(data, function(index, data) {
+//                $('#postFeed').append("<p>");
+//            });
+//        },
+//    });
+//}
+
 function addCategory(id) {
     $.ajax({
         type:'POST',
