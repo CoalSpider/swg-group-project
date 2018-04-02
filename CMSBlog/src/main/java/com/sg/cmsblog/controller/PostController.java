@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package com.sg.cmsblog.controller;
-
+import com.sg.cmsblog.dao.CategoryRepository;
 import com.sg.cmsblog.dao.PostRepository;
 import com.sg.cmsblog.model.Post;
 import java.util.List;
@@ -31,6 +31,9 @@ public class PostController {
     @Autowired
     private PostRepository posts;
 
+    @Autowired
+    private CategoryRepository categories;
+    
     @GetMapping("/post/{id}")
     public Post getPost(@PathVariable Integer id) {
         return posts.findOne(id);
@@ -62,5 +65,10 @@ public class PostController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);
+    }
+    
+    @GetMapping("/post/{name}")
+    public Post getPostByCategoryId(@PathVariable String name) {
+        return posts.findByCategoriesContaining(categories.findByName(name));
     }
 }

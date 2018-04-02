@@ -32,7 +32,7 @@ public class CategoryController {
     @Autowired
     private CategoryRepository repCategory;
 
-    @GetMapping("/category{id}")
+    @GetMapping("/category/{id}")
     public Category getCategory(@PathVariable Integer id) {
         return repCategory.findOne(id);
     }
@@ -54,7 +54,7 @@ public class CategoryController {
         return repCategory.save(category);
     }
 
-    @PutMapping("/category{id}")
+    @PutMapping("/category/{id}")
     public void updateCategory(@PathVariable Integer id, @Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + category);
@@ -62,7 +62,7 @@ public class CategoryController {
         repCategory.save(category);
     }
 
-    @DeleteMapping("/category{id}")
+    @DeleteMapping("/category/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(Integer id) {
         repCategory.delete(id);
