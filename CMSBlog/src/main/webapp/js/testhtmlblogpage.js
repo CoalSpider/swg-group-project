@@ -82,10 +82,11 @@ function hookCategoryButton() {
             dataType: 'json',
             success: function (data) {
                 $("#categoryCheckboxes").append("<input class=category type=checkbox id=" + data.categoryId + " value=" + data.name + " checked>" + data.name + "</input>");
-
+                $("#categoryInput").val("");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error posting category");
+                console.log("category already exists");
+                $("#categoryInput").val("");
             }
         });
     });

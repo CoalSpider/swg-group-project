@@ -48,11 +48,13 @@ public class CategoryController {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad create for " + category);
         }
+        if(repCategory.existsByName(category.getName())){
+            return null;
+        }
         return repCategory.save(category);
     }
 
     @PutMapping("/category{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateCategory(@PathVariable Integer id, @Valid @RequestBody Category category, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + category);
