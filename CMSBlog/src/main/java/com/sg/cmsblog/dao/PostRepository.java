@@ -6,6 +6,8 @@
 package com.sg.cmsblog.dao;
 
 import com.sg.cmsblog.model.Post;
+import com.sg.cmsblog.model.Tag;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +15,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Matt
  */
 public interface PostRepository extends JpaRepository<Post, Integer> {
-
+    List<Post> findByTagsContaining(Tag tag);
 }

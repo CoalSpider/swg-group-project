@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-const basePath = "http://localhost:8080/CMSBlog/";
+//const basePath = "http://localhost:8080/CMSBlog/";
 
 $(document).ready(function () {
     getAllTags();
