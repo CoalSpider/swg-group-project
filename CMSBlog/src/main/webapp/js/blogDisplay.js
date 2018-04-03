@@ -10,7 +10,7 @@ var deleteId = $("#postDelete").attr("value");
 
 $(document).ready(function () {
     loadCategory();
-    
+
     $("#postSubmit").click(function () {
         loadPost();
     });
@@ -27,7 +27,7 @@ $(document).ready(function () {
 
 /*
  * Post ajax calls
-// */
+ // */
 function loadPost(id) {
     $("textarea").hide();
     $.ajax({
@@ -93,12 +93,18 @@ function loadCategory() {
     $.ajax({
         type: 'GET',
         url: basePath + 'categories',
-        success: function(data) {
-            $.each(data, function(index, data) {
-                $("#postByCategory").append("<a href='#'><p>"  + data.name + "</p></a><br>");
+        success: function (data) {
+            $.each(data, function (index, data) {
+//                $("#postByCategory").append("<a href='"+basePath+"posts/categories/"+data.name+"'><p>"  + data.name + "</p></a><br>");
+                $("#postByCategory").append("<p><button name=" + data.name + " class='categoryButton'>" + data.name + "</button></p><br>");
+            });
+            console.log($(".categoryButton"));
+            $(".categoryButton").click(function () {
+                console.log("clicked " + this.name + " name");
+                displayPostByCategory(this.name);
             });
         },
-        error: function() {
+        error: function () {
             console.log("somthing went worng - figure it out!");
         }
     });
@@ -107,12 +113,12 @@ function loadCategory() {
 function displayPostByCategory(name) {
     $.ajax({
         type: 'GET',
-        url: basePath + 'categories' + name,
-        data: JSON.stringify({
-            name: name
-        }),
-        success: function(data) {
-            $.each(data, function(index, data) {
+        url: "http://localhost:8080/CMSBlog/posts/categories/" + name,
+        success: function (data) {
+            console.log("succus");
+            console.log(data);
+            $("#previewDiv").html("");
+            $.each(data, function (index, data) {
                 var title = data.title;
                 var id = data.postId;
                 var author = data.user.name;
@@ -124,58 +130,64 @@ function displayPostByCategory(name) {
                 preview += '<h3>' + title + '</h3><br>';
                 preview += '<p>' + summary + '</p><br>';
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
-                
+
                 $("#previewDiv").append(preview);
             });
         },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("failure");
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
     });
 }
 
 function addCategory(id) {
     $.ajax({
-        type:'POST',
+        type: 'POST',
         url: basePath + 'categories/' + id,
         data: JSON.stringify({
             name: $("#categoryName").val()
         }),
-        success: function(data) {
-            
+        success: function (data) {
+
         },
-        error: function() {
-            
+        error: function () {
+
         }
     });
 }
 
 function deleteCategory(id) {
     $.ajax({
-        type:'POST',
+        type: 'POST',
         url: 'http://localhost:8080/CMSBlog/categories/{id}',
         data: JSON.stringify({
             id: $("#categoryId").val()
         }),
-        success: function(data) {
-            
+        success: function (data) {
+
         },
-        error: function() {
-            
+        error: function () {
+
         }
     });
 }
 
 function updateCategory(id) {
     $.ajax({
-        type:'POST',
+        type: 'POST',
         url: 'http://localhost:8080/CMSBlog/categories/{id}',
         data: JSON.stringify({
             postId: $("#postID").val(),
             name: $("#categoryName").val()
         }),
-        success: function(data) {
-            
+        success: function (data) {
+
         },
-        error: function() {
-            
+        error: function () {
+
         }
     });
 }
