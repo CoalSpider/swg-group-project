@@ -104,20 +104,32 @@ function loadCategory() {
     });
 }
 
-//function displayPostByCategory(name) {
-//    $.ajax({
-//        type: 'GET',
-//        url: basePath + 'categories' + name,
-//        data: JSON.stringify({
-//            name: name
-//        }),
-//        success: function(data) {
-//            $.each(data, function(index, data) {
-//                $('#postFeed').append("<p>");
-//            });
-//        },
-//    });
-//}
+function displayPostByCategory(name) {
+    $.ajax({
+        type: 'GET',
+        url: basePath + 'categories' + name,
+        data: JSON.stringify({
+            name: name
+        }),
+        success: function(data) {
+            $.each(data, function(index, data) {
+                var title = data.title;
+                var id = data.postId;
+                var author = data.user.name;
+                var summary = data.summary;
+                var date = data.date;
+                console.log(data.date);
+
+                var preview = '<div class="postSelect" id="' + id + '">';
+                preview += '<h3>' + title + '</h3><br>';
+                preview += '<p>' + summary + '</p><br>';
+                preview += '<p>' + author + " " + date + '</p></div><hr>';
+                
+                $("#previewDiv").append(preview);
+            });
+        },
+    });
+}
 
 function addCategory(id) {
     $.ajax({
