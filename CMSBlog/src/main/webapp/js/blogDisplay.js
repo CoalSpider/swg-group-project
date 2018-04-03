@@ -115,9 +115,9 @@ function displayPostByCategory(name) {
         type: 'GET',
         url: "http://localhost:8080/CMSBlog/posts/categories/" + name,
         success: function (data) {
-            console.log("succus");
+            console.log("success");
             console.log(data);
-            $("#previewDiv").html("");
+            $("#postFeed").html("");
             $.each(data, function (index, data) {
                 var title = data.title;
                 var id = data.postId;
@@ -126,12 +126,12 @@ function displayPostByCategory(name) {
                 var date = data.date;
                 console.log(data.date);
 
-                var preview = '<div class="postSelect" id="' + id + '">';
+                var preview = '<div class="postSelect" id="' + name + id + '">';
                 preview += '<h3>' + title + '</h3><br>';
                 preview += '<p>' + summary + '</p><br>';
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
 
-                $("#previewDiv").append(preview);
+                $("#postFeed").append(preview);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
