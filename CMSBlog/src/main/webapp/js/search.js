@@ -10,9 +10,14 @@ var dateDiv = $("#postByDate");
 $(document).ready(function () {
     getAllPreviews();
     getAllCategories();
-    getAllDate();
-
-
+//    getAllDate();
+    $("#searchForm").submit(function (e) {
+        var text = $("#searchValue").val();
+        if (text.length > 0) {
+            searchByTag(text);
+        }
+        e.preventDefault();
+    });
 });
 
 $("#header").click(function (event) {
@@ -106,7 +111,6 @@ function load(postId) {
 
             previewDiv.append(blogPost);
 
-
             $("#next").click(function (event) {
 
                 $(previewDiv).html("");
@@ -118,6 +122,13 @@ function load(postId) {
                 load(id - 1);
             });
 
+            // append tag buttons
+            previewDiv.append(createTagButtons(data.tags));
+            // hookup tag buttons
+            $(".tag").click(function () {
+                console.log("clicked " + name);
+                searchByTag(this.name);
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             $("body").html("<p>404 not found</p>");
@@ -147,4 +158,53 @@ function getAllCategories() {
         }
     });
 }
-;
+
+// converts a list of tags to html buttons
+function createTagButtons(tags) {
+    var html = "";
+    $.each(tags, function (i, tag) {
+        // create a tag string
+        html += "<button class='tag' id=" + tag.tagId + " value='" + tag.tagId + "' name=" + tag.name + ">" + tag.name + "</button>";
+    });
+    return html;
+}
+
+function searchByTag(tagName) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/posts/tags/" + tagName,
+        success: function (posts) {
+            previewDiv.html("");
+
+            $.each(posts, function (index, post) {
+                var title = post.title;
+                var id = post.postId;
+                var author = post.user.name;
+                var summary = post.summary;
+                var date = post.date;
+                console.log(post.date);
+
+                var preview = '<div class="postSelect" id="' + id + '">';
+                preview += '<h3>' + title + '</h3><br>';
+                preview += '<p>' + summary + '</p><br>';
+                preview += '<p>' + author + " " + date + '</p></div><hr>';
+
+                previewDiv.append(preview);
+                $("#" + id).click(function (event) {
+                    previewDiv.html("");
+                    load(id);
+                });
+            });
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("failure could not find any posts with tag");
+//            console.log(tagName);
+//            console.log(jqXHR);
+//            console.log(textStatus);
+//            console.log(errorThrown);
+
+            previewDiv.html("<p>NO POSTS FOUND</p>");
+        }
+    });
+}

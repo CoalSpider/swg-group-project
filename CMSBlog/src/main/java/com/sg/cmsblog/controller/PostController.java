@@ -42,11 +42,6 @@ public class PostController {
     public Post getPost(@PathVariable Integer id) {
         return posts.findOne(id);
     }
-    
-    @GetMapping("/posts/{tagName}")
-    public List<Post> getPostsWithTag(@PathVariable String tagName){
-        return posts.findByTagsContaining(tags.findByName(tagName));
-    }
 
     @GetMapping("/posts")
     public List<Post> getAllPosts() {
@@ -76,8 +71,14 @@ public class PostController {
         posts.delete(id);
     }
     
-    @GetMapping("/post/{name}")
+    // TODO: fix endpoint ajax
+    @GetMapping("/posts/categories/{name}")
     public List<Post> getPostByCategoryId(@PathVariable String name) {
         return posts.findByCategoriesContaining(categories.findByName(name));
+    }
+
+    @GetMapping("/posts/tags/{tagName}")
+    public List<Post> getPostsWithTag(@PathVariable String tagName){
+        return posts.findByTagsContaining(tags.findByName(tagName));
     }
 }
