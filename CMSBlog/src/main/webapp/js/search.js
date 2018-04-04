@@ -112,7 +112,6 @@ function load(postId) {
             previewDiv.append(blogPost);
 
             $("#next").click(function (event) {
-
                 $(previewDiv).html("");
                 load(id + 1);
             });

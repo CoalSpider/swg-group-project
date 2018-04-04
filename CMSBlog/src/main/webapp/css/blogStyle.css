@@ -26,5 +26,10 @@ body{
 
 #navigator{
     text-align: center
-        
+
+}
+
+#loginForm{
+    text-align: center;
+    max-width: 500px;
 }
