@@ -54,6 +54,8 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad create for " + post);
         }
+        post.setApproved(false);
+        
         return posts.save(post);
     }
 
