@@ -117,7 +117,7 @@ function displayPostByCategory(name) {
         success: function (data) {
             console.log("succus");
             console.log(data);
-            $("#previewDiv").html("");
+            $("#postFeed").html("");
             $.each(data, function (index, data) {
                 var title = data.title;
                 var id = data.postId;
@@ -131,7 +131,7 @@ function displayPostByCategory(name) {
                 preview += '<p>' + summary + '</p><br>';
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
 
-                $("#previewDiv").append(preview);
+                $("#postFeed").append(preview);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
