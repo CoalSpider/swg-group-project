@@ -10,6 +10,10 @@ var deleteId = $("#postDelete").attr("value");
 
 $(document).ready(function () {
     loadCategory();
+    
+    $("#notApprovedBtn").click(function() {
+//        getNotApprovedPost();
+    });
 
     $("#postSubmit").click(function () {
         loadPost();
@@ -84,11 +88,43 @@ function deletePost(id) {
     });
 }
 
+function getNotApprovedPost() {
+    
+       $.ajax({
+        type: "GET",
+        url: basePath + "/post/notapproved",
+        success: function (posts) {
+            $.each(posts, function (index, post) {
+                var title = post.title;
+                var id = post.postId;
+                var author = post.user.name;
+                var summary = post.summary;
+                var date = post.date;
+                console.log(post.date);
+
+                var preview = '<div class="postSelect" id="' + id + '">';
+                preview += '<h3>' + title + '</h3><br>';
+                preview += '<p>' + summary + '</p><br>';
+                preview += '<p>' + author + " " + date + '</p></div><hr>';
+
+                $("#postFeedUser").append(preview);
+                $("#" + id).click(function (event) {
+
+                    $("#postFeedUser").html("");
+                    load(id);
+                });
+            });
+        },
+        error: function () {
+            alert("Failure");
+        }
+    });
+}
+
 /*
  * Category ajax calls
  */
 
-//working method
 function loadCategory() {
     $.ajax({
         type: 'GET',

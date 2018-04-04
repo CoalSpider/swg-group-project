@@ -84,12 +84,12 @@ public class PostController {
         return posts.findByTagsContaining(tags.findByName(tagName));
     }
 
-    @GetMapping("/posts/approved")
+    @GetMapping("/post/approved")
     public List<Post> getPostThatHaveBeenApproved() {
         return posts.findByApproved(true);
     }
-
-    @GetMapping("/post/notApproved")
+    
+    @GetMapping("/post/notapproved")
     public List<Post> getPostThatHaveNotBeenApproved() {
         return posts.findByApproved(false);
     }
