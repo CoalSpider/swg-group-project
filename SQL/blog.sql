@@ -22,7 +22,7 @@ create table `User`
 (
     userId int primary key auto_increment,
     `name` varchar(128) not null,
-    `password` varchar(512) not null
+    `password` varchar(70) not null
 );
 
 create table UserRole

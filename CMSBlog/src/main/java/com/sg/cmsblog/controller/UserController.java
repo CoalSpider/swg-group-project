@@ -6,13 +6,16 @@
 package com.sg.cmsblog.controller;
 
 import com.sg.cmsblog.dao.UserRepository;
+import com.sg.cmsblog.exceptions.AccountExistsException;
 import com.sg.cmsblog.model.User;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +34,8 @@ public class UserController {
 
     @Autowired
     private UserRepository repUser;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @GetMapping("/user{id}")
     @ResponseBody
@@ -47,32 +52,37 @@ public class UserController {
     @PostMapping("/user")
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + user);
+    public User createUser(@Valid @RequestBody User user, BindingResult bindingResult) throws AccountExistsException {
+        if(bindingResult.hasErrors()){
+            throw new RuntimeException("keep showing account page but with errors");
         }
+        if(repUser.findByName(user.getName()) != null){
+            throw new AccountExistsException("username taken");
+        }
+        
+        // hash password
+        String hashedPass = encoder.encode(user.getPassword());
+        user.setPassword(hashedPass);
+        
         return repUser.save(user);
     }
 
     @PutMapping("/user{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateUser(@PathVariable Integer id, @Valid @RequestBody User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad update for " + user);
+    public User updateUser(@PathVariable Integer id, @Valid @RequestBody User user, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            throw new RuntimeException("keep showing account page but with errors");
         }
-        repUser.save(user);
+        
+        // hash password
+        String hashedPass = encoder.encode(user.getPassword());
+        user.setPassword(hashedPass);
+        
+        return repUser.save(user);
     }
 
     @DeleteMapping("/user{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(Integer id) {
         repUser.delete(id);
-
-    }
-
-    private void validateUser(Integer id) {
-        if (repUser.exists(id) == false) {
-            throw new RuntimeException("no post with id " + id + "exists");
-        }
     }
 }

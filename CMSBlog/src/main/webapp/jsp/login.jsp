@@ -9,9 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="../css/bootstrap.min.css" rel="stylesheet"> 
-        <link href="../css/blogStyle.css" rel="stylesheet">
-        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet"> 
+        <link href="${pageContext.request.contextPath}/css/blogStyle.css" rel="stylesheet">
         <title>JSP Page</title>
     </head>
     <body>
@@ -32,7 +31,7 @@
                 <button class="col-sm-2" offset="col-sm-10" class="btn btn-default" type="submit" class="btn btn-default">Login</button>
             </form>
         </div>
-        <script src="../js/jquery-3.1.1.min.js"></script>
-        <script src="../js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
     </body>
 </html>
