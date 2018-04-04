@@ -5,6 +5,7 @@
  */
 package com.sg.cmsblog.controller;
 
+import com.sg.cmsblog.exceptions.AccountExistsException;
 import com.sg.cmsblog.exceptions.ErrorMessage;
 import com.sg.cmsblog.exceptions.NotFoundException;
 import com.sg.cmsblog.exceptions.UpdateIntegrityException;
@@ -53,17 +54,20 @@ public class ControllerExceptionHandler {
             messageBuilder.append("] ");
         }
 
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setMessage(messageBuilder.toString());
-        return errorMessage;
+        return new ErrorMessage(messageBuilder.toString());
     }
 
     @ExceptionHandler(UpdateIntegrityException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public ErrorMessage processUpdateIntegrityException(UpdateIntegrityException e) {
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setMessage(e.getMessage());
-        return errorMessage;
+        return new ErrorMessage(e.getMessage());
+    }
+    
+    @ExceptionHandler(AccountExistsException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    public ErrorMessage processAccountExistsException(AccountExistsException e){
+        return new ErrorMessage(e.getMessage());
     }
 }
