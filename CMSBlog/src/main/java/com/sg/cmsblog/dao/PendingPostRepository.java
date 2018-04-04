@@ -13,6 +13,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Willie Suggs ZeroCool
  */
 public interface PendingPostRepository extends JpaRepository<PendingPost, Integer>{
-    
   
 }

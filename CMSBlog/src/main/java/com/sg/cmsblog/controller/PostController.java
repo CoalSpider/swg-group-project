@@ -37,7 +37,7 @@ public class PostController {
 
     @Autowired
     private CategoryRepository categories;
-    
+
     @GetMapping("/post/{id}")
     public Post getPost(@PathVariable Integer id) {
         return posts.findOne(id);
@@ -70,7 +70,7 @@ public class PostController {
     public void deletePost(@PathVariable Integer id) {
         posts.delete(id);
     }
-    
+
     // TODO: fix endpoint ajax
     @GetMapping("/posts/categories/{name}")
     public List<Post> getPostByCategoryId(@PathVariable String name) {
@@ -78,11 +78,16 @@ public class PostController {
     }
 
     @GetMapping("/posts/tags/{tagName}")
-    public List<Post> getPostsWithTag(@PathVariable String tagName){
+    public List<Post> getPostsWithTag(@PathVariable String tagName) {
         return posts.findByTagsContaining(tags.findByName(tagName));
     }
-    
-    @GetMapping("/post/approved")
+
+    @GetMapping("/posts/approved")
+    public List<Post> getPostThatHaveBeenApproved() {
+        return posts.findByApproved(true);
+    }
+
+    @GetMapping("/post/notApproved")
     public List<Post> getPostThatHaveNotBeenApproved() {
         return posts.findByApproved(false);
     }

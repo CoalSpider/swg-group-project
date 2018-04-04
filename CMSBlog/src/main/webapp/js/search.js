@@ -8,7 +8,7 @@ var dateDiv = $("#postByDate");
 
 
 $(document).ready(function () {
-    getAllPreviews();
+    getAllApproved();
     getAllCategories();
 //    getAllDate();
     $("#searchForm").submit(function (e) {
@@ -30,6 +30,42 @@ function getAllPreviews() {
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
+        success: function (posts) {
+            $.each(posts, function (index, post) {
+                var title = post.title;
+                var id = post.postId;
+                var author = post.user.name;
+                var summary = post.summary;
+                var date = post.date;
+                console.log(post.date);
+
+                var preview = '<div class="postSelect" id="' + id + '">';
+                preview += '<h3>' + title + '</h3><br>';
+                preview += '<p>' + summary + '</p><br>';
+                preview += '<p>' + author + " " + date + '</p></div><hr>';
+
+
+
+                previewDiv.append(preview);
+                $("#" + id).click(function (event) {
+
+                    $(previewDiv).html("");
+                    load(id);
+                });
+            });
+        },
+        error: function () {
+            alert("Failure");
+        }
+    });
+}
+;
+
+function getAllApproved() {
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/posts/approved",
         success: function (posts) {
             $.each(posts, function (index, post) {
                 var title = post.title;
