@@ -115,7 +115,7 @@ function displayPostByCategory(name) {
         type: 'GET',
         url: "http://localhost:8080/CMSBlog/posts/categories/" + name,
         success: function (data) {
-            console.log("succus");
+            console.log("success");
             console.log(data);
             $("#postFeed").html("");
             $.each(data, function (index, data) {
@@ -126,7 +126,7 @@ function displayPostByCategory(name) {
                 var date = data.date;
                 console.log(data.date);
 
-                var preview = '<div class="postSelect" id="' + id + '">';
+                var preview = '<div class="postSelect" id="' + name + id + '">';
                 preview += '<h3>' + title + '</h3><br>';
                 preview += '<p>' + summary + '</p><br>';
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
