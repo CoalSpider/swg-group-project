@@ -15,18 +15,11 @@ and open the template in the editor.
  http://www.springframework.org/schema/security
  http://www.springframework.org/schema/security/spring-security-3.2.xsd">
     
-    <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="user" 
-                      password="user" 
-                      authorities="ROLE_USER" />
-                <user name="admin" 
-                      password="admin" 
-                      authorities="ROLE_USER, ROLE_ADMIN" />
-            </user-service>
-        </authentication-provider>
-    </authentication-manager>
+    <beans:bean id="webexpressionHandler" 
+                class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+    
+    <beans:bean id="encoder"
+                class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
     
     <http pattern="/login" security="none" />
     <http pattern="/css/**" security="none" />
@@ -50,12 +43,33 @@ and open the template in the editor.
                        access="IS_AUTHENTICATED_ANONYMOUSLY"/> 
     </http>
     
-    <beans:bean id="webexpressionHandler" 
-                class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
     
+<!--    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="user" 
+                      password="user" 
+                      authorities="ROLE_USER" />
+                <user name="admin" 
+                      password="admin" 
+                      authorities="ROLE_USER, ROLE_ADMIN" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>-->
     
-       
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder ref="encoder"/>
+            <jdbc-user-service id="userService"
+                               data-source-ref="dataSource"
+                               users-by-username-query="SELECT name,password,userId FROM `user` WHERE name=?"
+                               authorities-by-username-query=
+                                    "SELECT `user`.`name`, role.`name` 
+                                     FROM `user` 
+                                     INNER JOIN userrole ON `user`.userid = userrole.userid 
+                                     INNER JOIN role ON userrole.roleid = role.roleid
+                                     WHERE `user`.`name` = ?" 
+            />
+        </authentication-provider>
+    </authentication-manager>
 </beans:beans>
-    
-    
-   

@@ -9,8 +9,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet"> 
-        <link href="${pageContext.request.contextPath}/css/blogStyle.css" rel="stylesheet">
+        <link href="../css/bootstrap.min.css" rel="stylesheet"> 
+        <link href="../css/blogStyle.css" rel="stylesheet">
         <title>JSP Page</title>
     </head>
     <body>
@@ -28,10 +28,10 @@
                     <label class="col-sm-2" for="j_password">Password:</label>
                     <input class="col-sm-10" type="password" name="j_password" id="password" class="form-control" placeholder="Enter password"/>
                 </div>
-                <button class="col-sm-2" offset="col-sm-10" class="btn btn-default" type="submit" class="btn btn-default">Login</button>
+                <button class="col-sm-2" offset="col-sm-10" class="btn btn-default" type="submit" class="btn btn-default">Create Account</button>
             </form>
         </div>
-        <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
-        <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+        <script src="../js/jquery-3.1.1.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
     </body>
 </html>
