@@ -71,5 +71,14 @@ create table PostCategory
 );
 
 
-    
+ create table pendingPost(
+	pendingPostId int primary key auto_increment,
+    userId int not null,
+    `date` Date not null,
+    title varchar(128) not null,
+    summary tinyText not null,
+    content longtext not null,
+    postId int not null,
+    foreign key (postId) references `Post`(postId)
+);   
 	
