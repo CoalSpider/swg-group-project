@@ -71,7 +71,7 @@ create table PostCategory
 );
 
 
- create table pendingPost(
+ create table PendingPost(
 	pendingPostId int primary key auto_increment,
     userId int not null,
     `date` Date not null,
