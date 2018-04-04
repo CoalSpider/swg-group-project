@@ -298,7 +298,7 @@ function loadEdit(postId) {
             url: basePath + "post/" + postId,
             success: function (data) {
                 console.log("success");
-                previewDiv.load("testhtmlblogpage.html");
+                previewDiv.load("edit.html");
                 $("#id").val(data.postId);
                 $("#titleInput").val(data.title);
                 $("#summaryInput").val(data.summary);
