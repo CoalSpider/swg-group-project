@@ -20,4 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByCategoriesContaining(Category category);
     
     List<Post> findByTagsContaining(Tag tag);
+    
+    List<Post> findByApproved(boolean Approved);
+    
 }

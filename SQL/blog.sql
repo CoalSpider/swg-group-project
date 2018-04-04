@@ -42,6 +42,7 @@ create table Post
     title varchar(128) not null,
     summary tinyText not null,
     content longtext not null,
+    approved tinyint(1),
     foreign key (userid) references `User`(userId)
 );
 
@@ -70,7 +71,6 @@ create table PostCategory
      
 );
 
-
  create table PendingPost(
 	pendingPostId int primary key auto_increment,
     userId int not null,
@@ -80,5 +80,4 @@ create table PostCategory
     content longtext not null,
     postId int not null,
     foreign key (postId) references `Post`(postId)
-);   
-	
+);

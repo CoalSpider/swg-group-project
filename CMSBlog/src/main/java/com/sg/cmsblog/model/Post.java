@@ -51,7 +51,8 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-
+    @Column(nullable = false)
+    private boolean approved;
     @ManyToMany
     @JoinTable(name = "postCategory",
             joinColumns = {
@@ -125,6 +126,14 @@ public class Post {
         this.categories = categories;
     }
 
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -135,6 +144,7 @@ public class Post {
         hash = 67 * hash + Objects.hashCode(this.date);
         hash = 67 * hash + Objects.hashCode(this.tags);
         hash = 67 * hash + Objects.hashCode(this.user);
+        hash = 67 * hash + (this.approved ? 1 : 0);
         hash = 67 * hash + Objects.hashCode(this.categories);
         return hash;
     }
@@ -152,6 +162,9 @@ public class Post {
         }
         final Post other = (Post) obj;
         if (this.postId != other.postId) {
+            return false;
+        }
+        if (this.approved != other.approved) {
             return false;
         }
         if (!Objects.equals(this.title, other.title)) {
@@ -177,5 +190,8 @@ public class Post {
         }
         return true;
     }
+
+    
+    
 
 }
