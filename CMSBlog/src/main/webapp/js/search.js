@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 $("#header").click(function (event) {
     $(previewDiv).html("");
-    getAllPreviews();
+    getAllApproved();
 });
 
 function getAllPreviews() {
