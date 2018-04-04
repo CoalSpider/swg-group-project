@@ -54,6 +54,8 @@ public class PostController {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad create for " + post);
         }
+        post.setApproved(false);
+
         return posts.save(post);
     }
 
@@ -82,7 +84,7 @@ public class PostController {
         return posts.findByTagsContaining(tags.findByName(tagName));
     }
 
-    @GetMapping("/posts/approved")
+    @GetMapping("/post/approved")
     public List<Post> getPostThatHaveBeenApproved() {
         return posts.findByApproved(true);
     }
