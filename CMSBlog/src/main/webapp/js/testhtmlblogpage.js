@@ -25,7 +25,7 @@ function load(postId) {
                 $("#tinyMCEInput").val(data.content);
                 // check categories assosiated with this post
                 $.each(data.categories, function (i, category) {
-                    $("#" + category.categoryId).attr("checked", true);
+                    $("#category" + category.categoryId).attr("checked", true);
                 });
                 $("#tagInput").val(tagsToString(data.tags));
             },
@@ -46,7 +46,7 @@ function createCategoryCheckboxes() {
         success: function (data) {
             var html = "";
             $.each(data, function (t, category) {
-                html += "<input class=category type=checkbox id=" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
+                html += "<input class=category type=checkbox id=category" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
             });
             $("#categoryCheckboxes").html(html);
         },
@@ -110,7 +110,7 @@ function categoriesToJson() {
     // construct string object
     $.each(checked, function (i, category) {
         jsonString += JSON.stringify({
-            categoryId: category.id,
+            categoryId: category.id.replace("category",""),
             name: category.value
         });
         if (i < checked.length - 1) {
@@ -119,6 +119,7 @@ function categoriesToJson() {
     });
 
     jsonString += "]";
+    console.log(jsonString);
     return jsonString;
 }
 
@@ -178,7 +179,7 @@ function hookSaveButton() {
                     user: {
                         userId: 1,
                         name: "root",
-                        password: "root",
+                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
                         roles: [
                             {
                                 roleId: 1,
