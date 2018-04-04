@@ -38,6 +38,8 @@ function getAllPreviews() {
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (posts) {
             $.each(posts, function (index, post) {
+                console.log("posts");
+                console.log(posts); 
                 var title = post.title;
                 var id = post.postId;
                 var author = post.user.name;
@@ -49,8 +51,6 @@ function getAllPreviews() {
                 preview += '<h3>' + title + '</h3><br>';
                 preview += '<p>' + summary + '</p><br>';
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-
 
                 previewDiv.append(preview);
                 $("#" + id).click(function (event) {
@@ -291,14 +291,14 @@ const basePath = "http://localhost:8080/CMSBlog/";
 
 
 function loadEdit(postId) {
-    console.log("hello");
+    console.log("hello edit");
     $.when(createCategoryCheckboxes()).done(function () {
         $.ajax({
             type: "GET",
             url: basePath + "post/" + postId,
             success: function (data) {
                 console.log("success");
-                previewDiv.load("testhtmlblogpage.html");
+                previewDiv.load("edit.html");
                 $("#id").val(data.postId);
                 $("#titleInput").val(data.title);
                 $("#summaryInput").val(data.summary);
