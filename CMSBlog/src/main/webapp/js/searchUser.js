@@ -39,7 +39,7 @@ function getAllPreviews() {
         success: function (posts) {
             $.each(posts, function (index, post) {
                 console.log("posts");
-                console.log(posts); 
+                console.log(posts);
                 var title = post.title;
                 var id = post.postId;
                 var author = post.user.name;
@@ -299,6 +299,7 @@ function loadEdit(postId) {
             success: function (data) {
                 console.log("success");
                 previewDiv.load("edit.html");
+                hookSaveButton();
                 $("#id").val(data.postId);
                 $("#titleInput").val(data.title);
                 $("#summaryInput").val(data.summary);
@@ -319,6 +320,15 @@ function loadEdit(postId) {
         // handle failures
     });
 
+}
+
+function createPost() {
+    $.when(createCategoryCheckboxes()).done(function () {
+        previewDiv.load("edit.html")
+        hookNewButton();
+    }).fail(function () {
+        // handle failures
+    });
 }
 
 function createCategoryCheckboxes() {
@@ -444,12 +454,58 @@ function createTagsThatDontExist() {
     });
 }
 
-function hookSaveButton() {
+function hookNewButton(){
     $("#saveButton").click(function () {
         $.when(createTagsThatDontExist()).done(function (resultA) {
             $.ajax({
                 type: "PUT",
                 url: basePath + "post/" + $("#id").val(),
+                data: JSON.stringify({
+                    title: $("#titleInput").val(),
+                    summary: $("#summaryInput").val(),
+                    content: $("#tinyMCEInput").val(),
+                    date: $("#dateInput").val(),
+                    tags: resultA,
+                    user: {
+                        userId: 1,
+                        name: "root",
+                        password: "root",
+                        roles: [
+                            {
+                                roleId: 1,
+                                name: "admin"
+                            }
+                        ]
+                    },
+                    categories: JSON.parse(categoriesToJson())
+                }),
+                headers: {
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("error saving new post");
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            });
+        }).fail(function () {
+            // TODO: handle errors
+        });
+    });
+}
+
+function hookSaveButton() {
+    $("#saveButton").click(function () {
+        $.when(createTagsThatDontExist()).done(function (resultA) {
+            $.ajax({
+                type: "POST",
+                url: basePath + "post",
                 data: JSON.stringify({
                     postId: $("#id").val(),
                     title: $("#titleInput").val(),
