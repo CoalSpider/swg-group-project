@@ -81,4 +81,9 @@ public class PostController {
     public List<Post> getPostsWithTag(@PathVariable String tagName){
         return posts.findByTagsContaining(tags.findByName(tagName));
     }
+    
+    @GetMapping("/post/approved")
+    public List<Post> getPostThatHaveNotBeenApproved() {
+        return posts.findByApproved(false);
+    }
 }

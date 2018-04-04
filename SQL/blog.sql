@@ -22,7 +22,7 @@ create table `User`
 (
     userId int primary key auto_increment,
     `name` varchar(128) not null,
-    `password` varchar(512) not null
+    `password` varchar(70) not null
 );
 
 create table UserRole
@@ -42,6 +42,7 @@ create table Post
     title varchar(128) not null,
     summary tinyText not null,
     content longtext not null,
+    approved tinyint(1),
     foreign key (userid) references `User`(userId)
 );
 
@@ -69,16 +70,4 @@ create table PostCategory
 	foreign key (postId) references Post(postId)
      
 );
-
-
- create table pendingPost(
-	pendingPostId int primary key auto_increment,
-    userId int not null,
-    `date` Date not null,
-    title varchar(128) not null,
-    summary tinyText not null,
-    content longtext not null,
-    postId int not null,
-    foreign key (postId) references `Post`(postId)
-);   
 	
