@@ -22,7 +22,7 @@ $(document).ready(function () {
 
 $("#header").click(function (event) {
     $(previewDiv).html("");
-    getAllPreviews();
+    getAllApproved();
 });
 
 function getAllPreviews() {
@@ -65,7 +65,7 @@ function getAllApproved() {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/CMSBlog/posts/approved",
+        url: "http://localhost:8080/CMSBlog/post/approved",
         success: function (posts) {
             $.each(posts, function (index, post) {
                 var title = post.title;

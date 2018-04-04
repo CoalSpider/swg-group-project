@@ -32,11 +32,12 @@ $("#unapprovedFilter").click(function (event) {
 });
 
 function getAllPreviews() {
-
+    console.log("start");
     $.ajax({
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (posts) {
+            console.log("success");
             $.each(posts, function (index, post) {
                 console.log("posts");
                 console.log(posts);
