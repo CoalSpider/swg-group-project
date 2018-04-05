@@ -6,11 +6,19 @@
 var previewDiv = $("#postFeed");
 var dateDiv = $("#postByDate");
 
-
 $(document).ready(function () {
     getAllApproved();
     getAllCategories();
 //    getAllDate();
+    hookSearchForm();
+});
+
+$("#header").click(function (event) {
+    previewDiv.html("");
+    getAllApproved();
+});
+
+function hookSearchForm() {
     $("#searchForm").submit(function (e) {
         var text = $("#searchValue").val();
         if (text.length > 0) {
@@ -18,12 +26,37 @@ $(document).ready(function () {
         }
         e.preventDefault();
     });
-});
+}
 
-$("#header").click(function (event) {
-    $(previewDiv).html("");
-    getAllApproved();
-});
+function postToPreviewHtml(post) {
+    return '<div class="postSelect" id="' + post.postId + '">' +
+            '<h3>' + post.title + '</h3><br>' +
+            '<p>' + post.summary + '</p><br>' +
+            '<p>' + post.user.name + " " + post.date + '</p>' +
+            '</div>' +
+            '<hr>';
+}
+
+function setPreviewDiv(posts) {
+    previewDiv.html("");
+    $.each(posts, function (index, post) {
+        previewDiv.append(postToPreviewHtml(post));
+    });
+    $(".postSelect").click(function () {
+        previewDiv.html("");
+        load(this.id);
+    });
+}
+
+function printSuccessMsg(data, methodName) {
+    console.log('SUCCESS ' + methodName);
+    console.log(data);
+}
+
+function printErrorMsg(xhr, methodName) {
+    console.log('ERROR ' + methodName +' '+ xhr.status);
+    console.log(xhr);
+}
 
 function getAllPreviews() {
 
@@ -31,31 +64,31 @@ function getAllPreviews() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (posts) {
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-
-                    $(previewDiv).html("");
-                    load(id);
-                });
-            });
+            printSuccessMsg(posts,"getAllPreviews");
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//                console.log(post.date);
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                
+//                $("#" + id).click(function (event) {
+//                    previewDiv.html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr,"getAllPreviews");
         }
     });
 }
@@ -67,31 +100,31 @@ function getAllApproved() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/approved",
         success: function (posts) {
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-
-                    $(previewDiv).html("");
-                    load(id);
-                });
-            });
+            printSuccessMsg(posts,"getAllApproved");
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//                console.log(post.date);
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//
+//                    $(previewDiv).html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr,"getAllApproved");
         }
     });
 }
@@ -128,32 +161,34 @@ function load(postId) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/" + postId,
         success: function (data) {
-
-
-            var title = data.title;
+            printSuccessMsg(data,"load");
+//            var title = data.title;
             var id = data.postId;
-            var author = data.user.name;
-            var summary = data.summary;
-            var content = data.content;
-            var date = data.date;
+//            var author = data.user.name;
+//            var summary = data.summary;
+//            var content = data.content;
+//            var date = data.date;
 
-
-            var blogPost = '<div class=postSelect id ="post' + id + '">';
-            blogPost += '<h1>' + title + '</h1>';
-            blogPost += '<p>' + summary + '</p>';
-            blogPost += '<p>' + author + ' ' + date + '</p><br>';
-            blogPost += '<p>' + content + '</p>';
-            blogPost += '<div id="navigator"> <a id="previous"> <- previous post  </a> <a id="next">  next post -></a></div>';
+            var blogPost =
+                    '<div class=postSelect id ="post' + id + '">' +
+                    '<h1>' + data.title + '</h1>' +
+                    '<p>' + data.summary + '</p>' +
+                    '<p>' + data.user.author + ' ' + data.date + '</p><br>' +
+                    '<p>' + data.content + '</p>';
+            '<div id="navigator">' +
+                    '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
+                    '</div>' +
+                    '</div>';
 
             previewDiv.append(blogPost);
 
             $("#next").click(function (event) {
-                $(previewDiv).html("");
+                previewDiv.html("");
                 load(id + 1);
             });
 
             $("#previous").click(function (event) {
-                $(previewDiv).html("");
+                previewDiv.html("");
                 load(id - 1);
             });
 
@@ -161,12 +196,13 @@ function load(postId) {
             previewDiv.append(createTagButtons(data.tags));
             // hookup tag buttons
             $(".tag").click(function () {
-                console.log("clicked " + name);
+//                console.log("clicked " + name);
                 searchByTag(this.name);
             });
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            $("body").html("<p>404 not found</p>");
+        error: function (xhr) {
+            printErrorMsg(xhr,"load");
+           $("body").html("<p>404 post not found</p>");
         }
     });
 
@@ -180,16 +216,17 @@ function getAllCategories() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (categories) {
+            printSuccessMsg(categories,"getAllCategories");
             $.each(categories, function (index, category) {
                 var name = category.name;
-                var categoryId = category.categoryId;
+//                var categoryId = category.categoryId;
                 var categoryLink = '<a>' + name + '</a><br>';
 
                 categoriesDiv.append(categoryLink);
             });
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr,"getAllCategories");
         }
     });
 }
@@ -198,8 +235,10 @@ function getAllCategories() {
 function createTagButtons(tags) {
     var html = "";
     $.each(tags, function (i, tag) {
+        var id = tag.tagId;
+        var name = tag.name;
         // create a tag string
-        html += "<button class='tag' id=" + tag.tagId + " value='" + tag.tagId + "' name=" + tag.name + ">" + tag.name + "</button>";
+        html += "<button class='btn btn-default tag' value='" + id + "' name=" + name + ">" + name + "</button>";
     });
     return html;
 }
@@ -209,37 +248,33 @@ function searchByTag(tagName) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts/tags/" + tagName,
         success: function (posts) {
-            previewDiv.html("");
-
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-                    previewDiv.html("");
-                    load(id);
-                });
-            });
-
+            printSuccessMsg(posts,"searchByTag");
+//            previewDiv.html("");
+//
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//                console.log(post.date);
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//                    previewDiv.html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("failure could not find any posts with tag");
-//            console.log(tagName);
-//            console.log(jqXHR);
-//            console.log(textStatus);
-//            console.log(errorThrown);
-
-            previewDiv.html("<p>NO POSTS FOUND</p>");
+        error: function (xhr) {
+            printErrorMsg(xhr,"searchByTag");
+            previewDiv.html("<p>NO POSTS FOUND WITH TAGNAME: " + tagName + "</p>");
         }
     });
 }

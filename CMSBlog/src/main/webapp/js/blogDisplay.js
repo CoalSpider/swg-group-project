@@ -3,89 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var submitId = $("#postSubmit").attr("value");
-var editId = $("#postEdit").attr("value");
-var deleteId = $("#postDelete").attr("value");
+//var submitId = $("#postSubmit").attr("value");
+//var editId = $("#postEdit").attr("value");
+//var deleteId = $("#postDelete").attr("value");
 
 $(document).ready(function () {
     loadCategory();
-
-    $("#notApprovedBtn").click(function () {
-//        getNotApprovedPost();
-    });
-
-    $("#postSubmit").click(function () {
-        loadPost();
-    });
-
-    $("#postEdit").click(function () {
-        updatePost(id);
-    });
-
-    $("#postDelete").click(function () {
-        deletePost(id);
-    });
+//
+//    $("#notApprovedBtn").click(function () {
+////        getNotApprovedPost();
+//    });
+//
+//    $("#postSubmit").click(function () {
+//        loadPost();
+//    });
+//
+//    $("#postEdit").click(function () {
+//        updatePost(id);
+//    });
+//
+//    $("#postDelete").click(function () {
+//        deletePost(id);
+//    });
 });
-
-
-/*
- * Post ajax calls
- // */
-function loadPost(id) {
-    $("textarea").hide();
-    $.ajax({
-        type: 'GET',
-        url: "http://localhost:8080/CMSBlog/post/" + id,
-        success: function (data) {
-            $("body").innerhtml(data);
-        },
-        error: function () {
-
-        },
-    });
-}
-
-function updatePost(id) {
-    $("textarea").hide();
-    $.ajax({
-        type: 'PUT',
-        url: "http://localhost:8080/CMSBlog/post/" + id,
-        data: JSON.stringify({
-            userId: $("#usrId").val(),
-            postId: $("#postId").val(),
-            date: $("#date").val(),
-            summary: $("#summary").val(),
-            content: $("#content").val(),
-        }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        dataType: 'json',
-        success: function (data) {
-            $("#body").innerhtml(data);
-        },
-        error: function () {
-
-        }
-    });
-}
-
-function deletePost(id) {
-    $("textarea").hide();
-    $.ajax({
-        type: 'DELETE',
-        url: "http://localhost:8080/CMSBlog/post/" + id,
-        data: JSON.stringify({
-            postId: $("#postID").val()
-        }),
-        success: function (data) {
-        },
-        error: function () {
-            //some error
-        },
-    });
-}
 
 function getNotApprovedPost() {
 
@@ -114,8 +54,8 @@ function getNotApprovedPost() {
                 });
             });
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr);
         }
     });
 }
@@ -131,16 +71,16 @@ function loadCategory() {
         success: function (data) {
             $.each(data, function (index, data) {
 //                $("#postByCategory").append("<a href='"+"http://localhost:8080/CMSBlog/"+"posts/categories/"+data.name+"'><p>"  + data.name + "</p></a><br>");
-                $("#postByCategory").append("<p><button name=" + data.name + " class='categoryButton'>" + data.name + "</button></p><br>");
+                $("#postByCategory").append("<p><button name=" + data.name + " class='btn btn-default categoryButton'>" + data.name + "</button></p><br>");
             });
-            console.log($(".categoryButton"));
+//            console.log($(".categoryButton"));
             $(".categoryButton").click(function () {
-                console.log("clicked " + this.name + " name");
+//                console.log("clicked " + this.name + " name");
                 displayPostByCategory(this.name);
             });
         },
-        error: function () {
-            console.log("somthing went worng - figure it out!");
+        error: function (xhr) {
+            printErrorMsg(xhr);
         }
     });
 }
@@ -169,60 +109,114 @@ function displayPostByCategory(name) {
                 $("#postFeed").append(preview);
             });
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("failure");
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
+        error: function (xhr) {
+            printErrorMsg(xhr);
         }
     });
 }
+/*
+ * Post ajax calls
+ // */
+//function loadPost(id) {
+//    $("textarea").hide();
+//    $.ajax({
+//        type: 'GET',
+//        url: "http://localhost:8080/CMSBlog/post/" + id,
+//        success: function (data) {
+//            $("body").innerhtml(data);
+//        },
+//        error: function () {
+//
+//        },
+//    });
+//}
 
-function addCategory(id) {
-    $.ajax({
-        type: 'POST',
-        url: "http://localhost:8080/CMSBlog/" + 'categories/' + id,
-        data: JSON.stringify({
-            name: $("#categoryName").val()
-        }),
-        success: function (data) {
+//function updatePost(id) {
+//    $("textarea").hide();
+//    $.ajax({
+//        type: 'PUT',
+//        url: "http://localhost:8080/CMSBlog/post/" + id,
+//        data: JSON.stringify({
+//            userId: $("#usrId").val(),
+//            postId: $("#postId").val(),
+//            date: $("#date").val(),
+//            summary: $("#summary").val(),
+//            content: $("#content").val(),
+//        }),
+//        headers: {
+//            'Accept': 'application/json',
+//            'Content-Type': 'application/json'
+//        },
+//        dataType: 'json',
+//        success: function (data) {
+//            $("#body").innerhtml(data);
+//        },
+//        error: function () {
+//
+//        }
+//    });
+//}
 
-        },
-        error: function () {
+//function deletePost(id) {
+//    $("textarea").hide();
+//    $.ajax({
+//        type: 'DELETE',
+//        url: "http://localhost:8080/CMSBlog/post/" + id,
+//        data: JSON.stringify({
+//            postId: $("#postID").val()
+//        }),
+//        success: function (data) {
+//        },
+//        error: function () {
+//            //some error
+//        },
+//    });
+//}
+//function addCategory(id) {
+//    $.ajax({
+//        type: 'POST',
+//        url: "http://localhost:8080/CMSBlog/" + 'categories/' + id,
+//        data: JSON.stringify({
+//            name: $("#categoryName").val()
+//        }),
+//        success: function (data) {
+//
+//        },
+//        error: function () {
+//
+//        }
+//    });
+//}
 
-        }
-    });
-}
+//function deleteCategory(id) {
+//    $.ajax({
+//        type: 'POST',
+//        url: 'http://localhost:8080/CMSBlog/categories/{id}',
+//        data: JSON.stringify({
+//            id: $("#categoryId").val()
+//        }),
+//        success: function (data) {
+//
+//        },
+//        error: function () {
+//
+//        }
+//    });
+//}
 
-function deleteCategory(id) {
-    $.ajax({
-        type: 'POST',
-        url: 'http://localhost:8080/CMSBlog/categories/{id}',
-        data: JSON.stringify({
-            id: $("#categoryId").val()
-        }),
-        success: function (data) {
-
-        },
-        error: function () {
-
-        }
-    });
-}
-
-function updateCategory(id) {
-    $.ajax({
-        type: 'POST',
-        url: 'http://localhost:8080/CMSBlog/categories/{id}',
-        data: JSON.stringify({
-            postId: $("#postID").val(),
-            name: $("#categoryName").val()
-        }),
-        success: function (data) {
-
-        },
-        error: function () {
-
-        }
-    });
-}
+//function updateCategory(id) {
+//    $.ajax({
+//        type: 'POST',
+//        url: 'http://localhost:8080/CMSBlog/categories/{id}',
+//        data: JSON.stringify({
+//            postId: $("#postID").val(),
+//            name: $("#categoryName").val()
+//        }),
+//        success: function (data) {
+//
+//        },
+//        error: function () {
+//
+//        }
+//    });
+//}

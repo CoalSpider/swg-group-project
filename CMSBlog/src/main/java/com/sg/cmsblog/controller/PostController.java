@@ -8,11 +8,16 @@ package com.sg.cmsblog.controller;
 import com.sg.cmsblog.dao.CategoryRepository;
 import com.sg.cmsblog.dao.PostRepository;
 import com.sg.cmsblog.dao.TagRepository;
+import com.sg.cmsblog.dao.UserRepository;
 import com.sg.cmsblog.model.Post;
+import com.sg.cmsblog.model.User;
+import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +39,8 @@ public class PostController {
     private PostRepository posts;
     @Autowired
     private TagRepository tags;
+    @Autowired
+    private UserRepository users;
 
     @Autowired
     private CategoryRepository categories;
@@ -50,21 +57,39 @@ public class PostController {
 
     @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
-    public Post createPost(@Valid @RequestBody Post post, BindingResult bindingResult) {
+    public Post createPost(@Valid @RequestBody Post post, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad create for " + post);
         }
+        if(principal == null){
+            throw new RuntimeException("user not authenticated");
+        }
+
+        post.setUser(users.findByName(principal.getName()));
+
         post.setApproved(false);
 
         return posts.save(post);
     }
 
-    @PutMapping("/post/{id}")
-    public Post updatePost(@PathVariable Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) {
+    @PutMapping("/post/{id}/{username}")
+    public Post updatePost(@PathVariable("id") Integer id, @PathVariable("username")String username, @Valid @RequestBody Post post, BindingResult bindingResult) { 
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + post);
         }
+        User user = users.findByName(username);
+        post.setUser(user);
+
+        post.setApproved(false);
+
         return posts.save(post);
+    }
+
+    @PutMapping("/post/approve/{id}")
+    public Post approvePost(@PathVariable Integer id) {
+        Post p = posts.getOne(id);
+        p.setApproved(true);
+        return posts.save(p);
     }
 
     @DeleteMapping("/post/{id}")
