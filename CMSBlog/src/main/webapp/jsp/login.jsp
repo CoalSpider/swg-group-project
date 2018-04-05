@@ -14,20 +14,31 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <div  class="container" id="Login">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br><br><br><br>
+        <div class="col-sm-4">
 
-            <form role="form" method="post" id="loginForm" name="loginForm" action="j_spring_security_check">
+        </div>
+        <div  class="container col-md-4" id="Login" style="border: 1px solid black;">
+
+            <form role="form" method="post" id="loginForm" class="form-horizontal" name="loginForm" action="j_spring_security_check">
                 <div class="row">
                     <h1>Login</h1>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2" for="j_username" for="loginName">User Name:</label>
-                    <input class="col-sm-10" type="text" name="j_username" class="form-control" id="loginName" placeholder="Enter Name"/>
+                    <label class="col-sm-4" for="j_username" for="loginName">User Name:</label>
+                    <input class="col-sm-8" type="text" name="j_username" class="form-control" id="loginName" placeholder="Enter Name"/>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2" for="j_password">Password:</label>
-                    <input class="col-sm-10" type="password" name="j_password" id="password" class="form-control" placeholder="Enter password"/>
+                    <label class="col-sm-4" for="j_password">Password:</label>
+                    <input class="col-sm-8" type="password" name="j_password" id="password" class="form-control" placeholder="Enter password"/>
                 </div>
+                <div class="col-sm-4"></div>
                 <button class="col-sm-2" offset="col-sm-10" class="btn btn-default" type="submit" class="btn btn-default">Login</button>
             </form>
         </div>

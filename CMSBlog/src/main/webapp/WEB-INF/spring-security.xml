@@ -29,12 +29,13 @@ and open the template in the editor.
     <http auto-config="true">
         <form-login login-processing-url="/j_spring_security_check"
                     login-page="/login"
+                    default-target-url="/html/secureIndex.html"
                     authentication-failure-url="/login?login_error=1"/>
 
         <intercept-url pattern="/"
                        access="IS_AUTHENTICATED_ANONYMOUSLY"/>     
-        <intercept-url pattern="/secureIndex.html" 
-                       access="ROLE_USER"/>
+        <intercept-url pattern="/html/secureIndex.html" 
+                       access="ROLE_ADMIN"/>
         <intercept-url pattern="/content" 
                        access="ROLE_USER"/>
         <intercept-url pattern="/admin" 
@@ -48,7 +49,7 @@ and open the template in the editor.
     </http>
     
     
-<!--    <authentication-manager>
+    <!--    <authentication-manager>
         <authentication-provider>
             <user-service>
                 <user name="user" 
