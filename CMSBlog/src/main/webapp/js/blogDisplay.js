@@ -107,12 +107,71 @@ function displayPostByCategory(name) {
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
 
                 $("#postFeed").append(preview);
+                $("#" + id).click(function (event) {
+
+                    $("#postFeed").html("");
+                    load(id);
+                });
             });
         },
         error: function (xhr) {
             printErrorMsg(xhr);
         }
     });
+}
+
+function load(postId) {
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/post/" + postId,
+        success: function (data) {
+            printSuccessMsg(data, "load");
+//            var title = data.title;
+            var id = data.postId;
+//            var author = data.user.name;
+//            var summary = data.summary;
+//            var content = data.content;
+//            var date = data.date;
+
+            var blogPost =
+                    '<div class=postSelect id ="post' + id + '">' +
+                    '<h1>' + data.title + '</h1>' +
+                    '<p>' + data.summary + '</p>' +
+                    '<p>' + data.user.author + ' ' + data.date + '</p><br>' +
+                    '<p>' + data.content + '</p>';
+            '<div id="navigator">' +
+                    '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
+                    '</div>' +
+                    '</div>';
+
+            $("#postFeed").append(blogPost);
+
+            $("#next").click(function (event) {
+                $("#postFeed").html("");
+                load(id + 1);
+            });
+
+            $("#previous").click(function (event) {
+                $("#postFeed").html("");
+                load(id - 1);
+            });
+
+            // append tag buttons
+            $("#postFeed").append(createTagButtons(data.tags));
+            // hookup tag buttons
+            $(".tag").click(function () {
+//                console.log("clicked " + name);
+                searchByTag(this.name);
+            });
+        },
+        error: function (xhr) {
+            printErrorMsg(xhr, "load");
+            $("body").html("<p>404 post not found</p>");
+        }
+    });
+
+
 }
 /*
  * Post ajax calls

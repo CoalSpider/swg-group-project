@@ -54,7 +54,7 @@ function printSuccessMsg(data, methodName) {
 }
 
 function printErrorMsg(xhr, methodName) {
-    console.log('ERROR ' + methodName +' '+ xhr.status);
+    console.log('ERROR ' + methodName + ' ' + xhr.status);
     console.log(xhr);
 }
 
@@ -64,7 +64,7 @@ function getAllPreviews() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (posts) {
-            printSuccessMsg(posts,"getAllPreviews");
+            printSuccessMsg(posts, "getAllPreviews");
 //            $.each(posts, function (index, post) {
 //                var title = post.title;
 //                var id = post.postId;
@@ -88,7 +88,7 @@ function getAllPreviews() {
             setPreviewDiv(posts);
         },
         error: function (xhr) {
-            printErrorMsg(xhr,"getAllPreviews");
+            printErrorMsg(xhr, "getAllPreviews");
         }
     });
 }
@@ -100,7 +100,7 @@ function getAllApproved() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/approved",
         success: function (posts) {
-            printSuccessMsg(posts,"getAllApproved");
+            printSuccessMsg(posts, "getAllApproved");
 //            $.each(posts, function (index, post) {
 //                var title = post.title;
 //                var id = post.postId;
@@ -124,7 +124,7 @@ function getAllApproved() {
             setPreviewDiv(posts);
         },
         error: function (xhr) {
-            printErrorMsg(xhr,"getAllApproved");
+            printErrorMsg(xhr, "getAllApproved");
         }
     });
 }
@@ -161,7 +161,7 @@ function load(postId) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/" + postId,
         success: function (data) {
-            printSuccessMsg(data,"load");
+            printSuccessMsg(data, "load");
 //            var title = data.title;
             var id = data.postId;
 //            var author = data.user.name;
@@ -201,8 +201,8 @@ function load(postId) {
             });
         },
         error: function (xhr) {
-            printErrorMsg(xhr,"load");
-           $("body").html("<p>404 post not found</p>");
+            printErrorMsg(xhr, "load");
+            $("body").html("<p>404 post not found</p>");
         }
     });
 
@@ -216,7 +216,7 @@ function getAllCategories() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (categories) {
-            printSuccessMsg(categories,"getAllCategories");
+            printSuccessMsg(categories, "getAllCategories");
             $.each(categories, function (index, category) {
                 var name = category.name;
 //                var categoryId = category.categoryId;
@@ -226,7 +226,7 @@ function getAllCategories() {
             });
         },
         error: function (xhr) {
-            printErrorMsg(xhr,"getAllCategories");
+            printErrorMsg(xhr, "getAllCategories");
         }
     });
 }
@@ -248,7 +248,7 @@ function searchByTag(tagName) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts/tags/" + tagName,
         success: function (posts) {
-            printSuccessMsg(posts,"searchByTag");
+            printSuccessMsg(posts, "searchByTag");
 //            previewDiv.html("");
 //
 //            $.each(posts, function (index, post) {
@@ -273,7 +273,7 @@ function searchByTag(tagName) {
             setPreviewDiv(posts);
         },
         error: function (xhr) {
-            printErrorMsg(xhr,"searchByTag");
+            printErrorMsg(xhr, "searchByTag");
             previewDiv.html("<p>NO POSTS FOUND WITH TAGNAME: " + tagName + "</p>");
         }
     });
