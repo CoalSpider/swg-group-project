@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//const basePath = "http://localhost:8080/CMSBlog/";
 var submitId = $("#postSubmit").attr("value");
 var editId = $("#postEdit").attr("value");
 var deleteId = $("#postDelete").attr("value");
 
 $(document).ready(function () {
     loadCategory();
+
+    $("#notApprovedBtn").click(function () {
+//        getNotApprovedPost();
+    });
 
     $("#postSubmit").click(function () {
         loadPost();
@@ -32,7 +35,7 @@ function loadPost(id) {
     $("textarea").hide();
     $.ajax({
         type: 'GET',
-        url: basePath + 'post/' + id,
+        url: "http://localhost:8080/CMSBlog/post/" + id,
         success: function (data) {
             $("body").innerhtml(data);
         },
@@ -46,7 +49,7 @@ function updatePost(id) {
     $("textarea").hide();
     $.ajax({
         type: 'PUT',
-        url: basePath + 'post/' + id,
+        url: "http://localhost:8080/CMSBlog/post/" + id,
         data: JSON.stringify({
             userId: $("#usrId").val(),
             postId: $("#postId").val(),
@@ -72,7 +75,7 @@ function deletePost(id) {
     $("textarea").hide();
     $.ajax({
         type: 'DELETE',
-        url: basePath + 'post/' + id,
+        url: "http://localhost:8080/CMSBlog/post/" + id,
         data: JSON.stringify({
             postId: $("#postID").val()
         }),
@@ -84,18 +87,50 @@ function deletePost(id) {
     });
 }
 
+function getNotApprovedPost() {
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/" + "/post/notapproved",
+        success: function (posts) {
+            $.each(posts, function (index, post) {
+                var title = post.title;
+                var id = post.postId;
+                var author = post.user.name;
+                var summary = post.summary;
+                var date = post.date;
+                console.log(post.date);
+
+                var preview = '<div class="postSelect" id="' + id + '">';
+                preview += '<h3>' + title + '</h3><br>';
+                preview += '<p>' + summary + '</p><br>';
+                preview += '<p>' + author + " " + date + '</p></div><hr>';
+
+                $("#postFeedUser").append(preview);
+                $("#" + id).click(function (event) {
+
+                    $("#postFeedUser").html("");
+                    load(id);
+                });
+            });
+        },
+        error: function () {
+            alert("Failure");
+        }
+    });
+}
+
 /*
  * Category ajax calls
  */
 
-//working method
 function loadCategory() {
     $.ajax({
         type: 'GET',
-        url: basePath + 'categories',
+        url: "http://localhost:8080/CMSBlog/categories",
         success: function (data) {
             $.each(data, function (index, data) {
-//                $("#postByCategory").append("<a href='"+basePath+"posts/categories/"+data.name+"'><p>"  + data.name + "</p></a><br>");
+//                $("#postByCategory").append("<a href='"+"http://localhost:8080/CMSBlog/"+"posts/categories/"+data.name+"'><p>"  + data.name + "</p></a><br>");
                 $("#postByCategory").append("<p><button name=" + data.name + " class='categoryButton'>" + data.name + "</button></p><br>");
             });
             console.log($(".categoryButton"));
@@ -146,7 +181,7 @@ function displayPostByCategory(name) {
 function addCategory(id) {
     $.ajax({
         type: 'POST',
-        url: basePath + 'categories/' + id,
+        url: "http://localhost:8080/CMSBlog/" + 'categories/' + id,
         data: JSON.stringify({
             name: $("#categoryName").val()
         }),

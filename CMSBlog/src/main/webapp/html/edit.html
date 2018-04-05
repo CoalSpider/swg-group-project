@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Blog Page</title>
+        <meta charset="Utf-8"/>
+        <!-- Bootstrap core CSS -->
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div>
+            <form role="form" method="post" id="editform" name="editForm">
+                <div class="form-group">
+                    <input id="id" type="hidden" value=""/>
+                </div>
+                <div class="form-group row">
+                    <label class="" for="titleInput">Title:</label>
+                    <input class="form-control" id="titleInput" type="text" placeholder="enter title"/>
+                </div>
+                <div class="form-group row">
+                    <label class="" for="summaryInput">Summary:</label>
+                    <textarea class="form-control" id="summaryInput" placeholder="enter summary"></textarea>
+                </div>
+                <div class="form-group row">
+                    <label class="" for="dateInput">Date:</label>
+                    <input class=" form-control" id="dateInput" type="date"/>
+                </div>
+                <div class="form-group row">
+                    <label for="tinyMCEInput">Content:</label>
+                    <textarea id="tinyMCEInput"></textarea>
+                </div>
+               <div class="form-group row">
+                    <label class="" for="tagInput">Tags:</label>
+                    <textarea class="form-control  " id="tagInput" placeholder="enter tags"></textarea>
+                </div>
+                 <div class="row" id="categoryCheckboxes">
+                     <!-- generated boxes go here -->
+                 </div>
+            </form>
+            <form role="form" method="post" id="categoryForm" name="categoryForm">
+                <div class="form-group row">
+                    <label class="" for="categoryInput">Category:</label>
+                    <input class=" form-control" id="categoryInput" type="text" placeholder="enterCategory"/>
+                </div>
+                <button class="btn btn-default" type="submit" id="createCategory">Create Category</button>
+            </form>
+            <div class="row">
+                <button class="btn btn-default" id="saveButton">Save</button>
+                <button class="btn btn-default" id="approveButton">Approve</button>
+            </div>
+        </div>
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="../js/jquery-3.1.1.min.js"></script>
+        <script src="../js/bootstrap.min.js"></script>
+        <script src='../tinymce/js/tinymce/tinymce.min.js'></script>
+        <script src='../tinymce/js/tinymce/jquery.tinymce.min.js'></script>
+        <script type="text/javascript">
+            tinymce.init({
+                //main window
+                selector: '#tinyMCEInput',
+                branding: false,
+                elementpath: false,
+                height: 800,
+                //menubar
+                menubar: "file edit view format insert table view",
+                //toolbar
+                toolbar: 'undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent table forecolor backcolor image link media help',
+                //plugins
+                plugins: "help lists textcolor table image link media preview wordcount",
+                table_toolbar: "tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+                //spellchecking
+                browser_spellcheck: true,
+                contextmenu: false
+            });
+        </script>
+        <script src="../js/testhtmlblogpage.js"></script>
+    </body>
+</html>

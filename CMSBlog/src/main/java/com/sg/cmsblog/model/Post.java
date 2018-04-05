@@ -6,6 +6,7 @@
 package com.sg.cmsblog.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,8 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
+    
+    
     @Column(nullable = false)
     private boolean approved;
     @ManyToMany

@@ -15,7 +15,7 @@ function load(postId) {
     $.when(createCategoryCheckboxes()).done(function () {
         $.ajax({
             type: "GET",
-            url: basePath + "post/" + postId,
+            url: "http://localhost:8080/CMSBlog/post/" + postId,
             success: function (data) {
                 $("#id").val(data.postId);
                 $("#titleInput").val(data.title);
@@ -25,7 +25,7 @@ function load(postId) {
                 $("#tinyMCEInput").val(data.content);
                 // check categories assosiated with this post
                 $.each(data.categories, function (i, category) {
-                    $("#" + category.categoryId).attr("checked", true);
+                    $("#category" + category.categoryId).attr("checked", true);
                 });
                 $("#tagInput").val(tagsToString(data.tags));
             },
@@ -42,11 +42,11 @@ function load(postId) {
 function createCategoryCheckboxes() {
     return $.ajax({
         type: "GET",
-        url: basePath + "categories",
+        url: "http://localhost:8080/CMSBlog/categories",
         success: function (data) {
             var html = "";
             $.each(data, function (t, category) {
-                html += "<input class=category type=checkbox id=" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
+                html += "<input class=category type=checkbox id=category" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
             });
             $("#categoryCheckboxes").html(html);
         },
@@ -72,7 +72,7 @@ function hookCategoryButton() {
     $("#createCategory").click(function () {
         $.ajax({
             type: "POST",
-            url: basePath + "category",
+            url: "http://localhost:8080/CMSBlog/category",
             data: JSON.stringify({
                 name: $("#categoryInput").val()
             }),
@@ -110,7 +110,7 @@ function categoriesToJson() {
     // construct string object
     $.each(checked, function (i, category) {
         jsonString += JSON.stringify({
-            categoryId: category.id,
+            categoryId: category.id.replace("category",""),
             name: category.value
         });
         if (i < checked.length - 1) {
@@ -119,6 +119,7 @@ function categoriesToJson() {
     });
 
     jsonString += "]";
+    console.log(jsonString);
     return jsonString;
 }
 
@@ -167,7 +168,7 @@ function hookSaveButton() {
         $.when(createTagsThatDontExist()).done(function (resultA) {
             $.ajax({
                 type: "PUT",
-                url: basePath + "post/" + $("#id").val(),
+                url: "http://localhost:8080/CMSBlog/post/" + $("#id").val(),
                 data: JSON.stringify({
                     postId: $("#id").val(),
                     title: $("#titleInput").val(),
@@ -178,7 +179,7 @@ function hookSaveButton() {
                     user: {
                         userId: 1,
                         name: "root",
-                        password: "root",
+                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
                         roles: [
                             {
                                 roleId: 1,
