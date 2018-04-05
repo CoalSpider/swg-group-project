@@ -16,6 +16,7 @@ and open the template in the editor.
             <form role="form" method="post" id="editform" name="editForm">
                 <div class="form-group">
                     <input id="id" type="hidden" value=""/>
+                    <input id="username" type="hidden" value=""/>
                 </div>
                 <div class="form-group row">
                     <label class="" for="titleInput">Title:</label>
@@ -41,12 +42,12 @@ and open the template in the editor.
                      <!-- generated boxes go here -->
                  </div>
             </form>
-            <form role="form" method="post" id="categoryForm" name="categoryForm">
+            <form role="form" id="categoryForm" name="categoryForm">
                 <div class="form-group row">
                     <label class="" for="categoryInput">Category:</label>
                     <input class=" form-control" id="categoryInput" type="text" placeholder="enterCategory"/>
                 </div>
-                <button class="btn btn-default" type="submit" id="createCategory">Create Category</button>
+                <button type="button" class="btn btn-default" id="createCategory">Create Category</button>
             </form>
             <div class="row">
                 <button class="btn btn-default" id="saveButton">Save</button>

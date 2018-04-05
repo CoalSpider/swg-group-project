@@ -12,24 +12,60 @@ $(document).ready(function () {
     getAllPreviews();
     getAllCategories();
 //    getAllDate();
+    hookSearchForm();
+    hookCreatePostButton();
+});
+
+$("#header").click(function (event) {
+    previewDiv.html("");
+    getAllPreviews();
+});
+
+$("#unapprovedFilter").click(function (event) {
+    previewDiv.html("");
+    getAllUnapproved();
+});
+
+function hookSearchForm() {
     $("#searchForm").submit(function (e) {
         var text = $("#searchValue").val();
         if (text.length > 0) {
             searchByTag(text);
         }
-        e.preventDefault();
+//        e.preventDefault(); save button should refresh
     });
-});
+}
 
-$("#header").click(function (event) {
-    $(previewDiv).html("");
-    getAllPreviews();
-});
+function postToPreviewHtml(post) {
+    return '<div class="postSelect" id="' + post.postId + '">' +
+            '<h3>' + post.title + '</h3><br>' +
+            '<p>' + post.summary + '</p><br>' +
+            '<p>' + post.user.name + " " + post.date + '</p>' +
+            '</div>' +
+            '<hr>';
+}
 
-$("#unapprovedFilter").click(function (event) {
-    $(previewDiv).html("");
-    getAllUnapproved();
-});
+function setPreviewDiv(posts) {
+    previewDiv.html("");
+    $.each(posts, function (index, post) {
+        previewDiv.append(postToPreviewHtml(post));
+    });
+    $(".postSelect").click(function () {
+        previewDiv.html("");
+//        load(this.id);
+        loadEdit(this.id);
+    });
+}
+
+function printSuccessMsg(data, methodName) {
+    console.log('SUCCESS ' + methodName);
+    console.log(data);
+}
+
+function printErrorMsg(xhr, methodName) {
+    console.log('ERROR ' + methodName + ' ' + xhr.status);
+    console.log(xhr);
+}
 
 function getAllPreviews() {
     console.log("start");
@@ -37,32 +73,30 @@ function getAllPreviews() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts",
         success: function (posts) {
-            console.log("success");
-            $.each(posts, function (index, post) {
-                console.log("posts");
-                console.log(posts);
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-
-                    $(previewDiv).html("");
-                    loadEdit(id);
-                });
-            });
+            printSuccessMsg(posts, "getAllPreviews");
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//
+//                    $(previewDiv).html("");
+//                    loadEdit(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr, "getAllPreviews");
         }
     });
 }
@@ -72,33 +106,32 @@ function getAllApproved() {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8080/CMSBlog/posts/approved",
+        url: "http://localhost:8080/CMSBlog/post/approved",
         success: function (posts) {
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-
-                    $(previewDiv).html("");
-                    load(id);
-                });
-            });
+            printSuccessMsg(posts, "getAllApproved");
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//
+//                    $(previewDiv).html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr, "getAllApproved");
         }
     });
 }
@@ -110,31 +143,30 @@ function getAllUnapproved() {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/notApproved",
         success: function (posts) {
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-
-                    $(previewDiv).html("");
-                    load(id);
-                });
-            });
+            printSuccessMsg(posts, "getAllApproved");
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//
+//                    $(previewDiv).html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr, "getAllApproved");
         }
     });
 }
@@ -171,32 +203,33 @@ function load(postId) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/post/" + postId,
         success: function (data) {
-
-
-            var title = data.title;
+//            var title = data.title;
             var id = data.postId;
-            var author = data.user.name;
-            var summary = data.summary;
-            var content = data.content;
-            var date = data.date;
+//            var author = data.user.name;
+//            var summary = data.summary;
+//            var content = data.content;
+//            var date = data.date;
 
-
-            var blogPost = '<div class=postSelect id ="post' + id + '">';
-            blogPost += '<h1>' + title + '</h1>';
-            blogPost += '<p>' + summary + '</p>';
-            blogPost += '<p>' + author + ' ' + date + '</p><br>';
-            blogPost += '<p>' + content + '</p>';
-            blogPost += '<div id="navigator"> <a id="previous"> <- previous post  </a> <a id="next">  next post -></a></div>';
+            var blogPost =
+                    '<div class=postSelect id ="post' + id + '">' +
+                    '<h1>' + data.title + '</h1>' +
+                    '<p>' + data.summary + '</p>' +
+                    '<p>' + data.user.author + ' ' + data.date + '</p><br>' +
+                    '<p>' + data.content + '</p>';
+            '<div id="navigator">' +
+                    '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
+                    '</div>' +
+                    '</div>';
 
             previewDiv.append(blogPost);
 
             $("#next").click(function (event) {
-                $(previewDiv).html("");
+                previewDiv.html("");
                 load(id + 1);
             });
 
             $("#previous").click(function (event) {
-                $(previewDiv).html("");
+                previewDiv.html("");
                 load(id - 1);
             });
 
@@ -204,12 +237,12 @@ function load(postId) {
             previewDiv.append(createTagButtons(data.tags));
             // hookup tag buttons
             $(".tag").click(function () {
-                console.log("clicked " + name);
                 searchByTag(this.name);
             });
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            $("body").html("<p>404 not found</p>");
+        error: function (xhr) {
+            printErrorMsg(xhr, "load");
+            $("body").html("<p>404 post not found</p>");
         }
     });
 
@@ -225,14 +258,14 @@ function getAllCategories() {
         success: function (categories) {
             $.each(categories, function (index, category) {
                 var name = category.name;
-                var categoryId = category.categoryId;
+//                var categoryId = category.categoryId;
                 var categoryLink = '<a>' + name + '</a><br>';
 
                 categoriesDiv.append(categoryLink);
             });
         },
-        error: function () {
-            alert("Failure");
+        error: function (xhr) {
+            printErrorMsg(xhr, "getAllCategories");
         }
     });
 }
@@ -252,90 +285,106 @@ function searchByTag(tagName) {
         type: "GET",
         url: "http://localhost:8080/CMSBlog/posts/tags/" + tagName,
         success: function (posts) {
-            previewDiv.html("");
-
-            $.each(posts, function (index, post) {
-                var title = post.title;
-                var id = post.postId;
-                var author = post.user.name;
-                var summary = post.summary;
-                var date = post.date;
-                console.log(post.date);
-
-                var preview = '<div class="postSelect" id="' + id + '">';
-                preview += '<h3>' + title + '</h3><br>';
-                preview += '<p>' + summary + '</p><br>';
-                preview += '<p>' + author + " " + date + '</p></div><hr>';
-
-                previewDiv.append(preview);
-                $("#" + id).click(function (event) {
-                    previewDiv.html("");
-                    load(id);
-                });
-            });
-
+            printSuccessMsg(posts, "searchByTag");
+//            previewDiv.html("");
+//
+//            $.each(posts, function (index, post) {
+//                var title = post.title;
+//                var id = post.postId;
+//                var author = post.user.name;
+//                var summary = post.summary;
+//                var date = post.date;
+//                console.log(post.date);
+//
+//                var preview = '<div class="postSelect" id="' + id + '">';
+//                preview += '<h3>' + title + '</h3><br>';
+//                preview += '<p>' + summary + '</p><br>';
+//                preview += '<p>' + author + " " + date + '</p></div><hr>';
+//
+//                previewDiv.append(preview);
+//                $("#" + id).click(function (event) {
+//                    previewDiv.html("");
+//                    load(id);
+//                });
+//            });
+            setPreviewDiv(posts);
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("failure could not find any posts with tag");
-//            console.log(tagName);
-//            console.log(jqXHR);
-//            console.log(textStatus);
-//            console.log(errorThrown);
-
-            previewDiv.html("<p>NO POSTS FOUND</p>");
+        error: function (xhr) {
+            printErrorMsg(xhr, "searchByTag");
+            previewDiv.html("<p>NO POSTS FOUND WITH TAGNAME: " + tagName + "</p>");
         }
     });
 }
 
-const basePath = "http://localhost:8080/CMSBlog/";
-
-
-
 function loadEdit(postId) {
-    console.log("hello edit");
-    $.when(createCategoryCheckboxes()).done(function () {
-        $.ajax({
-            type: "GET",
-            url: basePath + "post/" + postId,
-            success: function (data) {
-                console.log("success");
-                previewDiv.load("edit.html");
-                $("#id").val(data.postId);
-                $("#titleInput").val(data.title);
-                $("#summaryInput").val(data.summary);
-                $("#dateInput").val(data.date);
-                // fill tiny mce with post content
-                $("#tinyMCEInput").val(data.content);
-                // check categories assosiated with this post
-                $.each(data.categories, function (i, category) {
-                    $("#" + category.categoryId).attr("checked", true);
-                });
-                $("#tagInput").val(tagsToString(data.tags));
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                $("body").html("<p>404 not found</p>");
-            }
+    // load post --> load edit div --> load categories --> fill data
+    loadPostEdit(postId).then(function (data) {
+        previewDiv.load("edit.html", function () {
+            createCategoryCheckboxes().then(function () {
+                fillFormData(data);
+            });
         });
-    }).fail(function () {
-        // handle failures
     });
+}
 
+function loadPostEdit(postId) {
+    return $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/post/" + postId,
+        success: function (data) {
+            printSuccessMsg(data, "loadPostEdit");
+        },
+        error: function (xhr) {
+            printErrorMsg(xhr, "loadPostEdit");
+        }
+    });
 }
 
 function createCategoryCheckboxes() {
     return $.ajax({
         type: "GET",
-        url: basePath + "categories",
+        url: "http://localhost:8080/CMSBlog/categories",
         success: function (data) {
+            printSuccessMsg(data, "createCategoryCheckboxes");
             var html = "";
             $.each(data, function (t, category) {
-                html += "<input class=category type=checkbox id=" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
+                html += "<input class=category type=checkbox id=category" + category.categoryId + " value=" + category.name + " >" + category.name + "</input>";
             });
             $("#categoryCheckboxes").html(html);
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            $("#categoryCheckboxes").html("<p>categories not found</p>");
+        error: function (xhr) {
+            printErrorMsg(xhr, "createCategoryCheckboxes");
         }
+    });
+}
+
+function fillFormData(data) {
+    hookSaveButton();
+    hookApproveButton(data.postId);
+    $("#id").val(data.postId);
+    $("#username").val(data.user.name);
+    $("#titleInput").val(data.title);
+    $("#summaryInput").val(data.summary);
+    $("#dateInput").val(data.date);
+    // fill tiny mce with post content
+    $("#tinyMCEInput").val(data.content);
+    // check categories assosiated with this post
+    $.each(data.categories, function (i, category) {
+        $("#category" + category.categoryId).attr("checked", true);
+    });
+    $("#tagInput").val(tagsToString(data.tags));
+}
+
+function createPost() {
+    $.when(createCategoryCheckboxes()).done(function () {
+        printSuccessMsg("none", "createPost");
+        previewDiv.html("");
+        // hook save button when edit.htnml is complete
+        previewDiv.load("edit.html", function () {
+            hookNewSaveButton();
+        });
+    }).fail(function (xhr) {
+        printErrorMsg(xhr, "createCategoryCheckboxes createPost");
     });
 }
 
@@ -352,10 +401,10 @@ function tagsToString(tags) {
 }
 
 function hookCategoryButton() {
-    $("#createCategory").click(function () {
+    $("#createCategory").click(function (e) {
         $.ajax({
             type: "POST",
-            url: basePath + "category",
+            url: "http://localhost:8080/CMSBlog/category",
             data: JSON.stringify({
                 name: $("#categoryInput").val()
             }),
@@ -365,12 +414,12 @@ function hookCategoryButton() {
             },
             dataType: 'json',
             success: function (data) {
+                printSuccessMsg(data, "searchByTag");
                 $("#categoryCheckboxes").append("<input class=category type=checkbox id=" + data.categoryId + " value=" + data.name + " checked>" + data.name + "</input>");
                 $("#categoryInput").val("");
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("category already exists");
-                $("#categoryInput").val("");
+            error: function (xhr) {
+                printErrorMsg(xhr, "createCategory");
             }
         });
     });
@@ -393,7 +442,7 @@ function categoriesToJson() {
     // construct string object
     $.each(checked, function (i, category) {
         jsonString += JSON.stringify({
-            categoryId: category.id,
+            categoryId: category.id.replace("category", ""),
             name: category.value
         });
         if (i < checked.length - 1) {
@@ -426,7 +475,7 @@ function createTagsThatDontExist() {
 
     return $.ajax({
         type: "PUT",
-        url: basePath + "tags",
+        url: "http://localhost:8080/CMSBlog/tags",
         data: jsonString,
         headers: {
             'Accept': "application/json",
@@ -434,13 +483,10 @@ function createTagsThatDontExist() {
         },
         dataType: 'json',
         success: function (data) {
-            console.log("Created some tags");
+            printSuccessMsg(data, "createTagsThatDontExist");
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("error saving tags");
-            console.log(errorThrown);
-            console.log(jqXHR);
-            return "";
+        error: function (xhr) {
+            printErrorMsg(xhr, "createTagsThatDontExist");
         }
     });
 }
@@ -448,9 +494,10 @@ function createTagsThatDontExist() {
 function hookSaveButton() {
     $("#saveButton").click(function () {
         $.when(createTagsThatDontExist()).done(function (resultA) {
+            console.log($("#id").val());
             $.ajax({
                 type: "PUT",
-                url: basePath + "post/" + $("#id").val(),
+                url: "http://localhost:8080/CMSBlog/post/" + $("#id").val() + "/" + $("#username").val(),
                 data: JSON.stringify({
                     postId: $("#id").val(),
                     title: $("#titleInput").val(),
@@ -461,7 +508,7 @@ function hookSaveButton() {
                     user: {
                         userId: 1,
                         name: "root",
-                        password: "root",
+                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
                         roles: [
                             {
                                 roleId: 1,
@@ -477,17 +524,82 @@ function hookSaveButton() {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
+                    printSuccessMsg(data, "hookSaveButton");
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("error saving post");
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
+                error: function (xhr) {
+                    printErrorMsg(xhr, "hookSaveButton");
                 }
             });
-        }).fail(function () {
-            // TODO: handle errors
+        }).fail(function (xhr) {
+            printErrorMsg(xhr, "hookSaveButton");
         });
+    });
+}
+
+function hookNewSaveButton() {
+    $("#saveNewButton").click(function () {
+        $.when(createTagsThatDontExist()).done(function (resultA) {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/CMSBlog/post",
+                data: JSON.stringify({
+                    title: $("#titleInput").val(),
+                    summary: $("#summaryInput").val(),
+                    content: $("#tinyMCEInput").val(),
+                    date: $("#dateInput").val(),
+                    tags: resultA,
+                    user: {
+                        userId: 1,
+                        name: "root",
+                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
+                        roles: [
+                            {
+                                roleId: 1,
+                                name: "admin"
+                            }
+                        ]
+                    },
+                    categories: JSON.parse(categoriesToJson())
+                }),
+                headers: {
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                },
+                dataType: 'json',
+                success: function (data) {
+                    printSuccessMsg(data, "hookNewSaveButton");
+                    // reload the page
+                    location.reload();
+                },
+                error: function (xhr) {
+                    printErrorMsg(xhr, "hookNewSaveButton");
+                }
+            });
+        }).fail(function (xhr) {
+            printErrorMsg(xhr, "hookNewSaveButton");
+        });
+    });
+}
+
+function hookApproveButton(postId) {
+    $("#approveButton").click(function () {
+        $.ajax({
+            type: "PUT",
+            url: "http://localhost:8080/CMSBlog/post/approve/" + postId,
+            success: function (data) {
+                printSuccessMsg(data, "hookApproveButton");
+                // reload the page
+                location.reload();
+            },
+            error: function (xhr) {
+                printErrorMsg(xhr, "hookApproveButton");
+            }
+        });
+    });
+}
+
+function hookCreatePostButton(){
+    $("#createPost").click(function(){
+        createPost();
     });
 }
