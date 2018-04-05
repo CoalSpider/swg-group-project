@@ -70,6 +70,12 @@ body {
     background-color: rgba(255,255,255,0.9);
 }
 
+#Login{
+    background-color: whitesmoke;
+    padding: 5px 20px 5px 5px;
+
+
+}
 #navigator{
     text-align: center
 
