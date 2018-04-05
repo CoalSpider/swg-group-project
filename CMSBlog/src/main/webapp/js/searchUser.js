@@ -497,7 +497,7 @@ function hookSaveButton() {
             console.log($("#id").val());
             $.ajax({
                 type: "PUT",
-                url: "http://localhost:8080/CMSBlog/post/" + $("#id").val() + "/" + $("#username").val(),
+                url: "http://localhost:8080/CMSBlog/post/" + $("#id").val(),
                 data: JSON.stringify({
                     postId: $("#id").val(),
                     title: $("#titleInput").val(),
@@ -505,17 +505,6 @@ function hookSaveButton() {
                     content: $("#tinyMCEInput").val(),
                     date: $("#dateInput").val(),
                     tags: resultA,
-                    user: {
-                        userId: 1,
-                        name: "root",
-                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
-                        roles: [
-                            {
-                                roleId: 1,
-                                name: "admin"
-                            }
-                        ]
-                    },
                     categories: JSON.parse(categoriesToJson())
                 }),
                 headers: {
@@ -548,17 +537,6 @@ function hookNewSaveButton() {
                     content: $("#tinyMCEInput").val(),
                     date: $("#dateInput").val(),
                     tags: resultA,
-                    user: {
-                        userId: 1,
-                        name: "root",
-                        password: "$2a$10$ripEHdQgSOsxJtx15WZNi.l8l6yxGM9ky.a46Gz0auoNdrLFGgjUi",
-                        roles: [
-                            {
-                                roleId: 1,
-                                name: "admin"
-                            }
-                        ]
-                    },
                     categories: JSON.parse(categoriesToJson())
                 }),
                 headers: {

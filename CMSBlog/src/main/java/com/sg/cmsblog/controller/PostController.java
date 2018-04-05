@@ -72,13 +72,12 @@ public class PostController {
         return posts.save(post);
     }
 
-    @PutMapping("/post/{id}/{username}")
-    public Post updatePost(@PathVariable("id") Integer id, @PathVariable("username")String username, @Valid @RequestBody Post post, BindingResult bindingResult) { 
+    @PutMapping("/post/{id}")
+    public Post updatePost(@PathVariable("id") Integer id, @Valid @RequestBody Post post, BindingResult bindingResult) { 
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("bad update for " + post);
         }
-        User user = users.findByName(username);
-        post.setUser(user);
+        post.setUser(posts.getOne(id).getUser());
 
         post.setApproved(false);
 
