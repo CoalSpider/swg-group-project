@@ -11,6 +11,7 @@ $(document).ready(function () {
     getAllCategories();
 //    getAllDate();
     hookSearchForm();
+    loadNavbarTabs();
 });
 
 $("#header").click(function (event) {
@@ -25,6 +26,29 @@ function hookSearchForm() {
             searchByTag(text);
         }
         e.preventDefault();
+    });
+}
+
+function loadNavbarTabs() {
+    $("#navbar").append("<li role='presentation' class=active role='presentation'><a href='http://localhost:8080/CMSBlog/'>Home</a></li>");
+    var staticPages = $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/CMSBlog/posts/staticPages",
+        success: function (posts) {
+            printSuccessMsg(posts, "loadNavbarTabs");
+            $.each(posts, function (index, post) {
+                $("#navbar").append("<li role='presentation' id='postTab" + post.postId + "' class='tab'><a>" + post.title + "</a></li>");
+            });
+            $(".tab").click(function () {
+                this.className += " active";
+                console.log(this.id);
+                previewDiv.html("");
+                load(this.id.replace("postTab", ""));
+            });
+        },
+        error: function (xhr) {
+            printErrorMsg(xhr, "loadNavbarTabs");
+        }
     });
 }
 
@@ -170,15 +194,15 @@ function load(postId) {
 //            var date = data.date;
 
             var blogPost =
-                    '<div class=postSelect id ="post' + id + '">' +
+                '<div class=postSelect id ="post' + id + '">' +
                     '<h1>' + data.title + '</h1>' +
                     '<p>' + data.summary + '</p>' +
                     '<p>' + data.user.author + ' ' + data.date + '</p><br>' +
-                    '<p>' + data.content + '</p>';
-            '<div id="navigator">' +
-                    '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
+                    '<p>' + data.content + '</p>' +
+                    '<div id="navigator">' +
+                        '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
                     '</div>' +
-                    '</div>';
+                '</div>';
 
             previewDiv.append(blogPost);
 

@@ -90,6 +90,11 @@ public class PostController {
         p.setApproved(true);
         return posts.save(p);
     }
+    
+    @GetMapping("posts/staticPages")
+    public List<Post> getStaticPages(){
+        return posts.findByCategoriesContaining(categories.findByName("static"));
+    }
 
     @DeleteMapping("/post/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
