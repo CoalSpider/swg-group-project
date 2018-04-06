@@ -19,27 +19,33 @@ and open the template in the editor.
                 </div>
                 <div class="form-group row">
                     <label class="" for="titleInput">Title:</label>
-                    <input class="form-control" id="titleInput" type="text" placeholder="enter title"/>
+                    <input class="form-control" id="titleInput" type="text" placeholder="enter title" required/>
+                    <span style="color:red" id="titleError"></span>
                 </div>
                 <div class="form-group row">
                     <label class="" for="summaryInput">Summary:</label>
-                    <textarea class="form-control" id="summaryInput" placeholder="enter summary"></textarea>
+                    <textarea class="form-control" id="summaryInput" placeholder="enter summary" required></textarea>
+                    <span style="color:red" id="summaryError"></span>
                 </div>
                 <div class="form-group row">
                     <label class="" for="dateInput">Date:</label>
-                    <input class=" form-control" id="dateInput" type="date"/>
+                    <input class=" form-control" id="dateInput" type="date" required/>
+                    <span style="color:red" id="dateError"></span>
                 </div>
                 <div class="form-group row">
                     <label for="tinyMCEInput">Content:</label>
-                    <textarea id="tinyMCEInput"></textarea>
+                    <textarea id="tinyMCEInput" required></textarea>
+                    <span style="color:red" id="contentError"></span>
                 </div>
                <div class="form-group row">
                     <label class="" for="tagInput">Tags:</label>
                     <textarea class="form-control  " id="tagInput" placeholder="enter tags"></textarea>
+                    <span style="color:red" id="tagError"></span>
                 </div>
                  <div class="row" id="categoryCheckboxes">
                      <!-- generated boxes go here -->
                  </div>
+                <span id="categoryError"></span>
             </form>
             <form role="form" id="categoryForm" name="categoryForm">
                 <div class="form-group row">

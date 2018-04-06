@@ -10,14 +10,11 @@ import com.sg.cmsblog.dao.PostRepository;
 import com.sg.cmsblog.dao.TagRepository;
 import com.sg.cmsblog.dao.UserRepository;
 import com.sg.cmsblog.model.Post;
-import com.sg.cmsblog.model.User;
 import java.security.Principal;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +38,6 @@ public class PostController {
     private TagRepository tags;
     @Autowired
     private UserRepository users;
-
     @Autowired
     private CategoryRepository categories;
 
@@ -57,10 +53,7 @@ public class PostController {
 
     @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
-    public Post createPost(@Valid @RequestBody Post post, BindingResult bindingResult, Principal principal) {
-        if (bindingResult.hasErrors()) {
-            throw new RuntimeException("bad create for " + post);
-        }
+    public Post createPost(@Valid @RequestBody Post post, Principal principal) {
         if(principal == null){
             throw new RuntimeException("user not authenticated");
         }
@@ -102,7 +95,6 @@ public class PostController {
         posts.delete(id);
     }
 
-    // TODO: fix endpoint ajax
     @GetMapping("/posts/categories/{name}")
     public List<Post> getPostByCategoryId(@PathVariable String name) {
         return posts.findByCategoriesContaining(categories.findByName(name));

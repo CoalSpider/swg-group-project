@@ -14,6 +14,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -28,8 +29,9 @@ import javax.validation.constraints.Size;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Post {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // type=identity = workaround for error performing isolated work
     private int postId;
     @Column(nullable = false)
     @Size(min = 1, max = 128, message = "Title must be between 1- 128")
@@ -53,8 +55,6 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;
-    
-    
     @Column(nullable = false)
     private boolean approved;
     @ManyToMany
@@ -194,8 +194,5 @@ public class Post {
         }
         return true;
     }
-
-    
-    
 
 }

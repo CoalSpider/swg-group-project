@@ -376,13 +376,10 @@ function fillFormData(data) {
 }
 
 function createPost() {
-    $.when(createCategoryCheckboxes()).done(function () {
+    previewDiv.load("edit.html", function () {
         printSuccessMsg("none", "createPost");
-        previewDiv.html("");
-        // hook save button when edit.htnml is complete
-        previewDiv.load("edit.html", function () {
-            hookNewSaveButton();
-        });
+        hookNewSaveButton();
+        createCategoryCheckboxes();
     }).fail(function (xhr) {
         printErrorMsg(xhr, "createCategoryCheckboxes createPost");
     });
@@ -462,16 +459,20 @@ function createTagsThatDontExist() {
     var jsonString = "[";
 
     $.each(tags, function (i, tag) {
-        jsonString += JSON.stringify({
-            tagId: 0, // no ids present
-            name: tag
-        });
-        if (i < tags.length - 1) {
-            jsonString += ",";
+        if (tag.length >= 1) {
+            jsonString += JSON.stringify({
+                tagId: 0, // no ids present
+                name: tag
+            });
+            if (i < tags.length - 1) {
+                jsonString += ",";
+            }
         }
     });
 
     jsonString += "]";
+
+    console.log("data = " + jsonString);
 
     return $.ajax({
         type: "PUT",
@@ -494,7 +495,6 @@ function createTagsThatDontExist() {
 function hookSaveButton() {
     $("#saveButton").click(function () {
         $.when(createTagsThatDontExist()).done(function (resultA) {
-            console.log($("#id").val());
             $.ajax({
                 type: "PUT",
                 url: "http://localhost:8080/CMSBlog/post/" + $("#id").val(),
@@ -517,16 +517,36 @@ function hookSaveButton() {
                 },
                 error: function (xhr) {
                     printErrorMsg(xhr, "hookSaveButton");
+                    $("#titleError").text("");
+                    $("#summaryError").text("");
+                    var msg = xhr.responseJSON.message;
+                    if (msg.includes("title")) {
+                        $("#titleError").text("Title must be between 1- 128 characters");
+                    }
+                    if (msg.includes("summary")) {
+                        $("#summaryError").text("Post must include summary");
+                    }
                 }
             });
         }).fail(function (xhr) {
-            printErrorMsg(xhr, "hookSaveButton");
+            printErrorMsg(xhr, "hookSaveButton fail create tags");
         });
     });
 }
 
+function setDateInputToNow() {
+    var now = new Date();
+    var month = (now.getMonth() + 1);
+    month = (month < 10) ? "0" + month : month;
+    var day = now.getDate();
+    day = (day < 10) ? "0" + day : day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+    $("#dateInput").val(today);
+}
+
 function hookNewSaveButton() {
-    $("#saveNewButton").click(function () {
+    setDateInputToNow();
+    $("#saveButton").click(function () {
         $.when(createTagsThatDontExist()).done(function (resultA) {
             $.ajax({
                 type: "POST",
@@ -551,6 +571,16 @@ function hookNewSaveButton() {
                 },
                 error: function (xhr) {
                     printErrorMsg(xhr, "hookNewSaveButton");
+                    $("#titleError").text("");
+                    $("#summaryError").text("");
+                    setDateInputToNow();
+                    var msg = xhr.responseJSON.message;
+                    if (msg.includes("title")) {
+                        $("#titleError").text("Title must be between 1- 128 characters");
+                    }
+                    if (msg.includes("summary")) {
+                        $("#summaryError").text("Post must include summary");
+                    }
                 }
             });
         }).fail(function (xhr) {
@@ -576,8 +606,8 @@ function hookApproveButton(postId) {
     });
 }
 
-function hookCreatePostButton(){
-    $("#createPost").click(function(){
+function hookCreatePostButton() {
+    $("#createPost").click(function () {
         createPost();
     });
 }

@@ -107,7 +107,7 @@ function displayPostByCategory(name) {
                 preview += '<p>' + author + " " + date + '</p></div><hr>';
 
                 $("#postFeed").append(preview);
-                $("#" + id).click(function (event) {
+                $("#" + name + id).click(function (event) {
 
                     $("#postFeed").html("");
                     load(id);
@@ -135,15 +135,15 @@ function load(postId) {
 //            var date = data.date;
 
             var blogPost =
-                    '<div class=postSelect id ="post' + id + '">' +
+                '<div class=postSelect id ="post' + id + '">' +
                     '<h1>' + data.title + '</h1>' +
                     '<p>' + data.summary + '</p>' +
                     '<p>' + data.user.author + ' ' + data.date + '</p><br>' +
-                    '<p>' + data.content + '</p>';
-            '<div id="navigator">' +
-                    '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
+                    '<p>' + data.content + '</p>' +
+                    '<div id="navigator">' +
+                        '<a id="previous"> <- previous post  </a> <a id="next">  next post -></a>' +
                     '</div>' +
-                    '</div>';
+                '</div>';
 
             $("#postFeed").append(blogPost);
 
